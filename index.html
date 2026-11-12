@@ -3,405 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fast Deal STORE</title>
+<title>FAST DEAL STORE</title>
 <meta name="theme-color" content="#0a050a">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="LADLA GAME STORE">
-<link id="pwa-manifest" rel="manifest" href="">
-<script>
-const manifestData={"name":"Fast Deal STORE","short_name":"Deal STORE","description":"Trending Topups - Fast - Secure - Instant","start_url":"./index.html","display":"standalone","background_color":"#0a050a","theme_color":"#0a050a","orientation":"portrait","icons":[{"src":"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>","sizes":"192x192","type":"image/svg+xml","purpose":"any"},{"src":"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>","sizes":"512x512","type":"image/svg+xml","purpose":"any"}]};
-const mBlob=new Blob([JSON.stringify(manifestData)],{type:'application/json'});
-document.getElementById('pwa-manifest').href=URL.createObjectURL(mBlob);
-</script>
-<style>
-:root{--bg:radial-gradient(1200px 600px at 10% 0%, #3b0f3a 0%, transparent 60%), radial-gradient(1000px 500px at 100% 20%, #ff5e3a 0%, transparent 55%), radial-gradient(800px 600px at 50% 100%, #ff8a5c 0%, transparent 60%), #0a050a;--accent:#FFC9A3;--banner:linear-gradient(135deg,#FF5E8A,#A855F7,#FF8A5C,#FFC9A3);--btn-bg:linear-gradient(135deg,#FF5E8A,#A855F7);--btn-text:#fff;--glow:0 10px 40px rgba(255,94,138,.45)}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
-body{background:var(--bg);background-attachment:fixed;color:#fff;min-height:100vh}
-/* ===== 10 ANIMATION THEME FIX ===== */
-body.theme-anim{background:var(--bg);background-size:300% 300%;animation:themeMove 8s ease infinite}
-@keyframes themeMove{0%{background-position:0% 0%}50%{background-position:100% 100%}100%{background-position:0% 0%}}
-body.theme-anim #banner{animation:themeMove 6s ease infinite;background-size:200% 200%}
-body.theme-anim .theme-opt{animation:themeMove 5s ease infinite;background-size:200% 200%}
-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.15);position:sticky;top:0;z-index:50}
-#logo{width:50px;height:50px;border-radius:16px;background:var(--banner);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;font-weight:900;box-shadow:var(--glow);flex-shrink:0}
-#logo img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-#storeTitle h2{background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:23px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#storeTitle small{color:#d1c7d1}
-.live{background:rgba(0,255,150,.15);color:#00ffa3;border:1px solid rgba(0,255,150,.4);padding:5px 11px;border-radius:20px;font-size:11px;font-weight:bold}
-.installBtn{background:#fff;color:#000;padding:8px 12px;border-radius:20px;font-size:12px;font-weight:900;box-shadow:none;display:none}
-.installBtn.show{display:block}
-#banner{height:185px;margin:14px 16px;border-radius:24px;background:var(--banner);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;box-shadow:var(--glow);border:1px solid rgba(255,255,255,.35);position:relative}
-#banner .main-banner-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity .6s}
-#banner .main-banner-img.show{opacity:1}
-#banner .banner-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.55));z-index:1}
-#banner span{color:#fff;font-weight:900;font-size:21px;text-shadow:0 4px 20px rgba(0,0,0,.5);position:relative;z-index:2;padding:0 12px}
-.banner-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:3}
-.banner-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);display:block}
-.banner-dots i.on{background:#fff;width:22px;border-radius:10px}
-.search{margin:0 16px 12px;background:rgba(255,255,255,.08);padding:13px 16px;border-radius:20px;color:#d1c7d1;font-size:13px;border:1px solid rgba(255,255,255,.15)}
-.filters{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none}
-.filters button{white-space:nowrap;padding:9px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#eee;cursor:pointer}
-.filters button.active{background:var(--btn-bg);color:#fff;font-weight:bold;box-shadow:var(--glow)}
-main{padding:0 16px 16px}
-h3.sec{margin:16px 0 12px;font-size:17px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card-game{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:20px;overflow:hidden;padding-bottom:10px;cursor:pointer}
-/* ===== ICON PHOTO FIX - AB FIX AAYEGI, UPAR NEECHE NAHI ===== */
-.card-game .top{height:105px;min-height:105px;max-height:105px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;overflow:hidden;position:relative;flex-shrink:0}
-.card-game .top img{width:100%;height:100%;object-fit:cover;object-position:center center;position:absolute;inset:0;display:block}
-.card-game .top .overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
-.card-game .top .emoji{font-size:32px;position:relative;z-index:2}
-.card-game .inner{padding:10px 12px}
-.badge{display:inline-block;background:var(--btn-bg);color:#fff;font-size:10px;padding:3px 9px;border-radius:10px;font-weight:bold}
-.card-game b{font-size:13px;display:block;margin:6px 0 2px}
-.card-game small{color:#d1c7d1;font-size:11px}
-.card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);padding:18px;border-radius:22px;margin:16px 0}
-.card h3{margin-bottom:8px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-label{font-size:13px;color:var(--accent)}
-input,textarea,select{width:100%;padding:11px;margin:6px 0 10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);color:#fff;outline:none}
-button{padding:10px 16px;border:0;border-radius:12px;background:var(--btn-bg);color:var(--btn-text);font-weight:bold;cursor:pointer;box-shadow:var(--glow)}
-.btn-green{background:var(--btn-bg);color:#fff;width:100%;padding:12px}
-.btn-red{background:linear-gradient(135deg,#ff1744,#ff5e3a);color:#fff;padding:6px 10px;font-size:12px;box-shadow:none}
-.btn-small{background:#333;color:#fff;padding:6px 10px;font-size:11px;box-shadow:none}
-.btn-save{background:#fff;color:#000;width:100%;padding:11px;box-shadow:none;margin-top:6px}
-.toggle-row{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.3);padding:10px 12px;border-radius:12px;margin:6px 0;border:1px solid rgba(255,255,255,.1)}
-.toggle-row input{width:20px;height:20px;margin:0}
-footer{background:rgba(0,0,0,.5);padding:28px 16px 16px;margin-top:10px;border-top:1px solid rgba(255,255,255,.15)}
-.foot-top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.foot-left h2{font-size:26px;margin-bottom:8px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.foot-left p{color:#d1c7d1;font-size:14px;line-height:1.6}
-.foot-right h4{background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.foot-right p{color:#d1c7d1;font-size:13px}
-.cs-btn{margin-top:10px;background:var(--btn-bg);color:#fff;padding:10px 18px;border-radius:20px}
-.pay{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.pay span{background:#fff;color:#000;padding:7px 10px;border-radius:8px;font-size:12px;font-weight:bold}
-.contact-box{margin-top:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);padding:14px;border-radius:16px}
-.contact-box p{color:#eee;font-size:14px;line-height:1.8}
-.bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:20px;padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#999;font-size:12px}
-.game-edit{background:rgba(0,0,0,.35);padding:12px;border-radius:14px;margin:10px 0;border:1px solid rgba(255,255,255,.15)}
-.game-edit b{color:var(--accent)}
-.game-edit .preview{width:100%;height:105px;min-height:105px;border-radius:10px;overflow:hidden;background:#222;display:flex;align-items:center;justify-content:center;margin:6px 0;flex-shrink:0}
-.game-edit .preview img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.pack-edit{background:#1a0a2e;border:2px solid #A855F7;padding:12px;border-radius:14px;margin:10px 0}
-.pack-edit .p-thumb{width:100%;height:90px;border-radius:10px;overflow:hidden;background:#222;display:flex;align-items:center;justify-content:center;margin:6px 0;border:1px dashed #fff}
-.pack-edit .p-thumb img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.banner-item{position:relative;border-radius:12px;overflow:hidden;height:90px;background:#222;border:1px solid rgba(255,255,255,.2)}
-.banner-item img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.banner-item button{position:absolute;top:6px;right:6px;background:#ff1744;color:#fff;padding:5px 9px;font-size:11px;box-shadow:none}
-.row2{display:flex;gap:8px}.row2 input{flex:1}
-.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
-.theme-opt{padding:14px;border-radius:16px;border:2px solid rgba(255,255,255,.25);cursor:pointer;text-align:center;font-size:12px;font-weight:bold;color:#fff;text-shadow:0 1px 6px #000}
-.theme-opt.selected{border-color:#fff;transform:scale(1.04)}
-.overlayPage{display:none;position:fixed;inset:0;background:#0a050a;z-index:1000;overflow-y:auto}
-.pageBox{max-width:100%;background:var(--bg);background-attachment:fixed;min-height:100vh;padding-bottom:30px}
-.steps{display:flex;gap:6px;margin:0 16px 14px;padding-top:14px}
-.steps div{flex:1;height:6px;border-radius:10px;background:rgba(255,255,255,.15)}
-.steps div.on{background:var(--btn-bg)}
-.pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
-.pack{padding:10px;border-radius:16px;border:2px solid rgba(255,255,255,.2);background:rgba(0,0,0,.4);cursor:pointer;text-align:center;position:relative;overflow:hidden;transition:.2s}
-/* ===== PACK SELECT LIGHT ANIMATION ===== */
-.pack.sel{border-color:#00ff88;background:rgba(0,255,136,.12);animation:packGlow 1.1s ease-in-out infinite}
-.pack.sel::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shineMove 1.1s linear infinite;pointer-events:none}
-@keyframes packGlow{0%,100%{box-shadow:0 0 0 2px #00ff88,0 0 12px #00ff88}50%{box-shadow:0 0 0 3px #00ff88,0 0 28px #00ff88,0 0 45px #00ff88}}
-@keyframes shineMove{0%{left:-80%}100%{left:130%}}
-.pack .pk-img{width:100%;height:90px;border-radius:12px;overflow:hidden;background:#222;margin-bottom:8px;display:flex;align-items:center;justify-content:center;position:relative}
-.pack .pk-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.pack .pk-check{position:absolute;top:6px;right:6px;background:#00ff88;color:#000;width:22px;height:22px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;font-weight:900;z-index:2}
-.pack.sel .pk-check{display:flex}
-.pack-buy{width:100%;background:var(--btn-bg);padding:9px;border-radius:9px;font-size:13px;margin-top:8px}
-.pay-voltra{background:#fff;color:#111;border-radius:16px;padding:6px;margin:10px 0;overflow:hidden}
-.pay-row{display:flex;align-items:center;gap:12px;padding:14px 10px;border-bottom:1px solid #eef2f7;cursor:pointer}
-.pay-row:last-child{border-bottom:0}
-.pay-row.sel{background:#f0f7ff}
-.pay-logo{width:44px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900}
-.pay-logo.apple{font-size:22px}
-.pay-logo.visa{color:#1a1f71;font-style:italic;font-size:17px;letter-spacing:-1px}
-.mc-c{width:32px;height:20px;position:relative}
-.mc-c i{position:absolute;width:20px;height:20px;border-radius:50%;top:0}
-.mc-c i:first-child{background:#eb001b;left:0}
-.mc-c i:last-child{background:#f79e1b;opacity:.9;left:12px}
-.pay-radio{width:22px;height:22px;border-radius:50%;border:2px solid #cbd5e1;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.pay-row.sel .pay-radio{border-color:#2563eb}
-.pay-row.sel .pay-radio:after{content:'';width:12px;height:12px;border-radius:50%;background:#2563eb;display:block}
-.confirmModal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
-.confirmModal.show{display:flex}
-.confirmBox{background:#fff;color:#111;border-radius:22px;padding:22px;width:100%;max-width:340px;text-align:center}
-.c-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e2e8f0;font-size:14px}
-.c-row span{color:#64748b}
-.printerTop{background:#1e293b;border-radius:16px 16px 0 0;padding:14px 14px 0;text-align:center}
-.printerTop:before{content:'';display:block;width:60px;height:6px;background:#475569;border-radius:10px;margin:0 auto 10px}
-.printerBody{background:#0f172a;border-radius:12px;padding:10px;display:flex;justify-content:center;gap:6px;align-items:center}
-.printerBody i{width:8px;height:8px;border-radius:50%;display:block}
-.printerSlot{background:#000;height:14px;margin:10px 0 0;border-radius:10px 10px 0 0;box-shadow:inset 0 2px 6px #000;position:relative;z-index:5}
-.receiptWrap2{background:transparent;overflow:hidden;padding:0 14px 14px}
-.receiptPaper2{background:#fff;color:#111;padding:18px 15px;transform:translateY(-110%);transition:transform 1.8s ease;position:relative;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.3);clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),95% 100%,90% calc(100% - 8px),85% 100%,80% calc(100% - 8px),75% 100%,70% calc(100% - 8px),65% 100%,60% calc(100% - 8px),55% 100%,50% calc(100% - 8px),45% 100%,40% calc(100% - 8px),35% 100%,30% calc(100% - 8px),25% 100%,20% calc(100% - 8px),15% 100%,10% calc(100% - 8px),5% 100%,0 calc(100% - 8px))}
-.receiptPaper2.show{transform:translateY(0)}
-.r-row2{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #e2e8f0;font-size:14px;color:#111}
-.r-row2 span{color:#64748b;font-size:13px}
-.stamp{position:absolute;right:20px;top:0;width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;transform:rotate(-18deg) scale(2.8);opacity:0;z-index:5;background:rgba(255,255,255,.7)}
-.stamp.show{animation:stampThap .6s ease forwards}
-@keyframes stampThap{0%{transform:rotate(-18deg) scale(2.8);opacity:0}60%{transform:rotate(-18deg) scale(.9);opacity:1}100%{transform:rotate(-18deg) scale(1);opacity:1}}
-.stamp.paid{border:4px double #087443;color:#087443}.stamp.pending{border:4px double #8a5b00;color:#8a5b00}.stamp.failed{border:4px double #b4232a;color:#b4232a}
-.barcode2{height:43px;margin-top:10px;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px)}
-#pinOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center;padding:20px}
-#pinBox{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);padding:24px;border-radius:22px;width:100%;max-width:320px;text-align:center}
-#pinBox h3{background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-#pinInput{text-align:center;font-size:22px;letter-spacing:8px}
-.status-btn{flex:1;padding:12px;border:3px solid transparent;border-radius:12px;cursor:pointer;font-weight:bold}
-.status-btn.on{border-color:#fff;transform:scale(1.03)}
-.verify-card{background:#0f1e2e;border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin:12px 0;border:1px solid rgba(255,255,255,.08)}
-.verify-card .v-left b{color:#fff;font-size:16px}
-.verify-card .v-left p{color:#aab8c5;font-size:13px;margin-top:6px}
-.verify-card .v-arrow{background:none;color:#fff;font-size:22px;box-shadow:none;padding:4px 2px;cursor:pointer}
-.trust-box{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);border-radius:16px;padding:14px;margin:14px 16px;font-size:13px;line-height:2;color:#d1fae5}
-.detail-topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(0,0,0,.5);position:sticky;top:0;z-index:10}
-.detail-banner{position:relative;height:210px;overflow:hidden;background:var(--banner)}
-.detail-banner img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:opacity .6s}
-.detail-banner .db-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.35))}
-.detail-banner .db-text{position:absolute;left:14px;bottom:14px;right:14px}
-.detail-banner .db-text h1{font-size:28px;font-weight:900;text-transform:uppercase;text-shadow:0 4px 20px #000}
-.detail-banner .db-text p{font-size:11px;letter-spacing:1px;color:#ddd;margin-top:6px;font-weight:bold}
-.sold-wrap{padding:14px 16px 0}
-.sold-title{font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.sold-title:before{content:'';width:4px;height:20px;background:var(--btn-bg);border-radius:10px;display:block}
-.sold-scroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px}
-.sold-card{min-width:135px;background:var(--btn-bg);border-radius:12px;padding:12px;text-align:center}
-.sold-card .s-emoji{font-size:28px}
-.sold-card b{font-size:12px;display:block;margin-top:4px}
-.sold-card small{font-size:10px;color:#eee}
-.search-player{padding:14px 16px 0}
-.search-player h2{font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.search-player h2:before{content:'';width:4px;height:20px;background:var(--btn-bg);border-radius:10px;display:block}
-.search-row{display:flex;gap:8px}
-.search-row input{flex:1;background:#fff!important;color:#000!important;border:2px solid #fff;border-radius:10px;padding:13px;font-size:14px;font-weight:bold;margin:0}
-.search-row button{white-space:nowrap;background:var(--btn-bg);padding:12px 14px;font-size:13px;border-radius:10px}
-.packs-wrap{padding:14px 16px 0}
-.packs-wrap h2{font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.packs-wrap h2:before{content:'';width:4px;height:20px;background:var(--btn-bg);border-radius:10px;display:block}
-</style>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><div style="display:flex;gap:10px;align-items:center;min-width:0"><div id="logo" onclick="secretClick()"><span>LG</span></div><div id="storeTitle" onclick="secretClick()"><h2 id="storeNameTop">LADLA GAME STORE</h2><small id="storeTaglineTop">Trending Topups • Fast • Secure • Instant</small></div></div><div style="display:flex;gap:6px;align-items:center"><button id="installBtn" class="installBtn" onclick="installApp()">⬇️ Install</button><span class="live">● LIVE</span></div></header>
+<header>
+  <div style="display:flex;gap:10px;align-items:center">
+    <div id="logo" onclick="secretClick()"><span>FD</span></div>
+    <div id="storeTitle" onclick="secretClick()"><h2 id="storeNameTop">FAST DEAL STORE</h2><small id="storeTaglineTop">Trending Topups • Fast • Secure • Instant</small></div>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center"><button id="installBtn" class="installBtn" onclick="installApp()">⬇️ Install</button><span class="live">● LIVE</span></div>
+</header>
 <div id="banner"><span id="bannerText">🔥 Trending Topups<br>Fast • Secure • Instant</span><div class="banner-dots" id="bannerDots"></div></div>
 <div class="search">🔍 Search... PUBG, BGMI, Free Fire...</div>
 <div class="filters" id="filterBar"></div>
 <main>
 <h3 class="sec">🔥 Trending Now</h3><div class="grid" id="trendingGrid"></div>
 <h3 class="sec">🎮 All Games</h3><div class="grid" id="allGrid"></div>
-<div class="card" id="settingsCard" style="display:none">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3>⚙️ Store Settings - Admin Only</h3><button onclick="lockSettings()" style="background:#ff1744;color:#fff;padding:6px 12px;box-shadow:none">🔒 LOCK</button></div>
-<div style="background:linear-gradient(135deg,#FF5E8A,#A855F7);padding:14px;border-radius:14px;margin:12px 0"><b style="color:#fff">🏪 STORE NAME</b><label style="color:#fff">Store Name</label><input type="text" id="storeNameInput" value="LADLA GAME STORE"><label style="color:#fff">Tagline</label><input type="text" id="storeTaglineInput" value="Trending Topups • Fast • Secure • Instant"><button onclick="applyStoreName()" class="btn-save">✅ SAVE STORE NAME</button></div>
-<div style="background:#000;padding:14px;border-radius:14px;border:2px solid #00ff88;margin:12px 0"><b style="color:#fff">🖼️ MAIN PAGE BANNERS - UNLIMITED</b><input type="file" id="bannerPhotosInput" accept="image/*" multiple onchange="uploadBannerPhotos(event)"><div id="bannerPhotosList" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px"></div><p id="bannerCountText" style="color:#00ff88;font-size:12px;font-weight:bold;margin-top:8px">0 Banners</p><button onclick="saveMainBanners()" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE MAIN BANNERS</button><button onclick="clearAllBanners()" style="background:#ff1744;color:#fff;box-shadow:none;width:100%;margin-top:6px">🗑️ Delete All Banners</button></div>
-<div style="background:#ffcc00;color:#000;padding:14px;border-radius:14px;margin:12px 0"><h3 style="color:#000;margin:0">📦 ORDERS</h3><p style="color:#333;font-size:12px">Set what next customer will see - Success / Pending / Failed</p></div>
-<div style="background:#000;padding:12px;border-radius:14px;border:2px solid #ffcc00;margin:10px 0"><b style="color:#fff">🎯 WHAT WILL BE NEXT ORDER RESULT?</b><div style="display:flex;gap:8px;margin-top:8px"><button id="defSuccess" class="status-btn" onclick="setDefaultStatus('Success')" style="background:#00c853;color:#fff">✅ SUCCESS</button><button id="defPending" class="status-btn" onclick="setDefaultStatus('Pending')" style="background:#ffcc00;color:#000">⏳ PENDING</button><button id="defFailed" class="status-btn" onclick="setDefaultStatus('Failed')" style="background:#ff1744;color:#fff">❌ FAILED</button></div><p id="defaultStatusText" style="color:#ffcc00;font-weight:bold;margin-top:8px">Current: ⏳ Pending</p><button onclick="saveOrderSettings()" class="btn-save" style="background:#ffcc00;color:#000">✅ SAVE ORDER SETTINGS</button></div>
-<div style="background:#111;padding:12px;border-radius:14px;border:2px solid #fff;margin:10px 0"><b style="color:#fff">📝 PENDING / FAILED REASON</b><label>⏳ Pending Reason</label><textarea id="pendingReason"></textarea><label>❌ Failed Reason</label><textarea id="failedReason"></textarea><button onclick="saveReasonSettings()" class="btn-save">✅ SAVE REASONS</button></div>
-<div id="ordersList"></div><button onclick="clearOrders()" style="background:#333;color:#fff;box-shadow:none;margin-top:6px">🗑️ Clear All Orders</button>
-<h4 style="margin:16px 0 6px">✨ Premium Themes - 20 (10 Static + 10 Animated)</h4><div class="theme-grid" id="themeGrid"></div><button onclick="saveTheme()" class="btn-save">✅ SAVE THEME</button>
-<label>Icon / Logo Photo</label><input type="file" id="logoInput" accept="image/*"><button onclick="saveLogo()" class="btn-save">✅ SAVE LOGO</button>
-<label>Official Contact</label><input type="text" id="contactInput" placeholder="Enter contact number"><label>Address</label><textarea id="addressInput" placeholder="Enter address"></textarea><button onclick="saveContact()" class="btn-save">✅ SAVE CONTACT & ADDRESS</button>
-<h4 style="margin:12px 0 6px">Payment Channels - ON / OFF</h4>
-<div class="toggle-row"><span>💳 Card</span><input type="checkbox" id="payCard" checked></div>
-<div class="toggle-row"><span>🍎 Apple Pay</span><input type="checkbox" id="payApple" checked></div>
-<div class="toggle-row"><span>🪙 USDT</span><input type="checkbox" id="payUsdt" checked></div>
-<div class="toggle-row"><span>₿ Bitcoin</span><input type="checkbox" id="payBtc" checked></div>
-<button onclick="savePaymentSettings()" class="btn-save" style="background:#00c853;color:#fff">✅ SAVE PAYMENT SETTINGS</button>
-<h4 style="margin:16px 0 6px">🔘 Filter Buttons</h4><input type="text" id="filterInput" value="All, Trending, Battle Royale, Diamonds, Coins"><button onclick="saveFilterSettings()" class="btn-save">✅ SAVE FILTERS</button>
-<h4 style="margin:16px 0 6px">🎮 Games Control</h4>
-<div style="background:rgba(0,0,0,.4);padding:12px;border-radius:14px;border:2px dashed var(--accent);margin:12px 0"><b style="color:var(--accent)">➕ Add New Game</b><input type="text" id="newName" placeholder="New Game Name"><div class="row2"><input type="text" id="newCat" placeholder="Category"><input type="text" id="newPrice" placeholder="Price - From $300"></div><div class="row2"><input type="text" id="newBadge" placeholder="Badge - HOT"><input type="text" id="newIcon" placeholder="Emoji"></div><input type="text" id="newUserLabel" placeholder="Username Field"><div class="row2"><input type="text" id="newFixedUser" placeholder="Fixed Username"><input type="text" id="newFixedUid" placeholder="Fixed UID"></div><button class="btn-green" onclick="addGame()">➕ ADD NEW GAME</button></div>
-<div id="gamesEditor"></div>
-<h4 style="margin:16px 0 6px">💾 Save - Backup</h4><button onclick="saveAll()" style="width:100%">💾 SAVE ALL</button><div style="display:flex;gap:8px;margin-top:8px"><button onclick="exportBackup()" style="flex:1;background:#333;color:#fff;box-shadow:none">📋 COPY BACKUP</button><button onclick="importBackup()" style="flex:1;background:#333;color:#fff;box-shadow:none">📥 PASTE BACKUP</button></div><p id="savedMsg" style="color:#4caf50;margin-top:8px;display:none">✅ Saved!</p>
-</div></main>
+</main>
 
-<div class="overlayPage" id="page1"><div class="pageBox">
-<div class="detail-topbar"><div style="display:flex;gap:10px;align-items:center"><button onclick="closeFlow()" class="btn-small">← Back</button><b id="p1Title">Game</b></div><span>🛒</span></div>
-<div class="steps"><div class="on"></div><div></div><div></div><div></div></div>
-<div class="detail-banner" id="p1Banner"></div>
-<div class="sold-wrap"><div class="sold-title">RECENTLY SOLD</div><div class="sold-scroll" id="soldScroll"></div></div>
-<div class="search-player"><h2>ENTER PLAYER ID</h2><div class="search-row"><input type="text" id="usernameInput" placeholder="Enter Player ID"><button onclick="verifyUid()">🔗 VERIFY</button></div><p id="usernameError" style="color:#ff1744;font-size:13px;display:none;margin-top:8px">❌ Wrong ID!</p><p id="usernameOk" style="color:#00ff88;font-size:13px;display:none;margin-top:8px">✅ Connected</p><p id="usernameLabel" style="color:#aaa;font-size:12px;margin-top:6px">Player ID</p></div>
-<div id="verifiedCard" style="display:none;padding:0 16px"></div>
-<div class="packs-wrap"><h2 id="packsTitle">💎 PACKS</h2><div class="pack-grid" id="packGrid"></div></div>
-<div id="afterVerify" style="display:none;padding:0 16px"><div class="trust-box"><b style="color:#fff">🛡️ 100% TRUSTED - POLICY</b><br>✅ 100% Safe & Secure<br>✅ 100% Fast Delivery Guaranteed<br>✅ 100% Trusted - ID Will Not Be Banned<br>✅ 100% Money Back Policy<br>✅ 24/7 Customer Support</div><button class="btn-green" onclick="goToPayment()" style="padding:15px;font-size:16px">Continue - Payment →</button></div>
+<!-- ===== SETTINGS - ALAG PAGE - PIN NAHI ===== -->
+<div class="overlayPage" id="settingsPage"><div class="pageBox" style="padding:16px">
+<div class="detail-topbar"><button onclick="closeSettingsPage()" class="btn-small">← Back</button><b>⚙️ Store Settings</b><button onclick="closeSettingsPage()" style="background:#ff1744;padding:6px 12px;box-shadow:none">✖ Close</button></div>
+<div class="card">
+  <b>🏪 STORE NAME - Yahan se badlo, har jagah badlega</b><input id="storeNameInput" value="FAST DEAL STORE"><input id="storeTaglineInput" value="Trending Topups • Fast • Secure • Instant"><button onclick="applyStoreName()" class="btn-save">✅ SAVE STORE NAME</button>
+</div>
+<div class="card" style="border:2px solid #00ff88"><b>🖼️ MAIN BANNERS</b><input type="file" id="bannerPhotosInput" accept="image/*" multiple onchange="uploadBannerPhotos(event)"><div id="bannerPhotosList" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px"></div><p id="bannerCountText">0 Banners</p><button onclick="saveMainBanners()" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE BANNERS</button><button onclick="clearAllBanners()" style="background:#ff1744;width:100%">🗑️ Delete All</button></div>
+<div class="card" style="border:2px solid #ffcc00"><b>🎯 NEXT ORDER RESULT?</b><div style="display:flex;gap:8px;margin-top:8px"><button id="defSuccess" class="status-btn" onclick="setDefaultStatus('Success')" style="background:#00c853;color:#fff">✅ SUCCESS</button><button id="defPending" class="status-btn" onclick="setDefaultStatus('Pending')" style="background:#ffcc00;color:#000">⏳ PENDING</button><button id="defFailed" class="status-btn" onclick="setDefaultStatus('Failed')" style="background:#ff1744;color:#fff">❌ FAILED</button></div><p id="defaultStatusText">Current: ⏳ Pending</p><button onclick="saveOrderSettings()" class="btn-save" style="background:#ffcc00;color:#000">✅ SAVE ORDER</button></div>
+<div class="card"><b>📝 REASON</b><label>⏳ Pending Reason</label><textarea id="pendingReason"></textarea><label>❌ Failed Reason</label><textarea id="failedReason"></textarea><button onclick="saveReasonSettings()" class="btn-save">✅ SAVE REASONS</button></div>
+<div class="card"><b>📦 ORDERS</b><div id="ordersList"></div><button onclick="clearOrders()" style="background:#333">🗑️ Clear Orders</button></div>
+<div class="card"><h4>✨ Themes - 20</h4><div class="theme-grid" id="themeGrid"></div><button onclick="saveTheme()" class="btn-save">✅ SAVE THEME</button></div>
+<div class="card"><label>Icon / Logo Photo</label><input type="file" id="logoInput" accept="image/*"><button onclick="saveLogo()" class="btn-save">✅ SAVE LOGO</button><label>Official Contact</label><input id="contactInput"><label>Address</label><textarea id="addressInput"></textarea><button onclick="saveContact()" class="btn-save">✅ SAVE CONTACT</button></div>
+<div class="card"><h4>Payment ON / OFF</h4><div class="toggle-row"><span>💳 Card</span><input type="checkbox" id="payCard" checked></div><div class="toggle-row"><span>🍎 Apple Pay</span><input type="checkbox" id="payApple" checked></div><div class="toggle-row"><span>🪙 USDT</span><input type="checkbox" id="payUsdt" checked></div><div class="toggle-row"><span>₿ Bitcoin</span><input type="checkbox" id="payBtc" checked></div><button onclick="savePaymentSettings()" class="btn-save" style="background:#00c853;color:#fff">✅ SAVE PAYMENT</button></div>
+<div class="card"><h4>🔘 Filters</h4><input id="filterInput" value="All, Trending, Battle Royale, Diamonds, Coins"><button onclick="saveFilterSettings()" class="btn-save">✅ SAVE FILTERS</button></div>
+<div class="card"><h4>🎮 Games Control</h4><div style="background:rgba(0,0,0,.4);padding:12px;border-radius:14px;border:2px dashed var(--accent)"><b>➕ Add New Game</b><input id="newName" placeholder="New Game Name"><div class="row2"><input id="newCat" placeholder="Category"><input id="newPrice" placeholder="Price"></div><div class="row2"><input id="newBadge" placeholder="Badge"><input id="newIcon" placeholder="Emoji"></div><input id="newUserLabel" placeholder="Username Field"><div class="row2"><input id="newFixedUser" placeholder="Fixed Username"><input id="newFixedUid" placeholder="Fixed UID"></div><button class="btn-green" onclick="addGame()">➕ ADD GAME</button></div><div id="gamesEditor"></div></div>
+<div class="card"><h4>💾 Backup</h4><button onclick="saveAll()" style="width:100%">💾 SAVE ALL</button><div style="display:flex;gap:8px;margin-top:8px"><button onclick="exportBackup()" style="flex:1;background:#333">📋 COPY</button><button onclick="importBackup()" style="flex:1;background:#333">📥 PASTE</button></div></div>
 </div></div>
 
-<div class="overlayPage" id="page2"><div class="pageBox" style="padding:16px">
-<div class="steps" style="margin:0 0 14px;padding:0"><div class="on"></div><div class="on"></div><div></div><div></div></div>
-<div style="display:flex;justify-content:space-between;align-items:center"><h3>💳 Payment</h3><button onclick="backToPage1()" class="btn-small">← Back</button></div>
-<div style="display:flex;justify-content:space-between;align-items:center;background:#141433;padding:13px;border-radius:12px;margin:12px 0"><span>🔒 <b>Secure Payment</b></span><span style="font-size:12px;color:#94a3b8">SSL • 256-bit Encrypted</span></div>
-<div id="p2UserTop" style="background:#0f1e2e;color:#fff;padding:14px;border-radius:12px;margin:12px 0"></div>
-<div id="p2Summary" style="background:#141433;border:1.5px solid #facc15;padding:15px;border-radius:14px;margin:10px 0"></div>
-<h4 style="font-size:13px;letter-spacing:1px">PAYMENT METHOD</h4>
-<div id="payMethods"></div>
-<div style="background:#141433;padding:15px;border-radius:14px;border:1.5px solid #facc15;margin-top:10px"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span>🔒 <b>Card Security Code</b></span><span style="font-size:12px;color:#94a3b8">CVC / CVV</span></div><input id="cvcInput" placeholder="Enter" maxlength="4" inputmode="numeric" style="text-align:center;font-size:20px;letter-spacing:6px"><button class="btn-green" onclick="goToLoading()" style="padding:15px;font-size:16px">💰 PAY NOW → SECURE</button><div style="text-align:center;font-size:12px;color:#64748b;margin-top:10px">🔒 SSL • ✅ 3D Secure • 🛡️ Protected</div></div>
-</div></div>
-
-<div class="overlayPage" id="page3"><div class="pageBox" style="padding:22px;text-align:center">
-<div class="steps" style="margin:0 0 14px;padding:0"><div class="on"></div><div class="on"></div><div class="on"></div><div></div></div>
-<div style="display:flex;justify-content:space-between;margin-top:10px"><span style="font-size:13px;color:#94a3b8">🔒 SECURE TRANSACTION</span><span style="font-size:12px;background:#1e293b;padding:5px 10px;border-radius:20px">SSL Protected</span></div>
-<h2 style="font-size:28px;margin:35px 0 5px">Processing Payment</h2>
-<p style="color:#94a3b8;font-size:13px" id="p3UidLine">UID: 5308075875 | BINRAO</p>
-<div id="p3UserTop" style="background:#0f1e2e;color:#fff;padding:12px;border-radius:12px;margin:14px 0"></div>
-<div style="background:#1e293b;height:16px;border-radius:20px;margin:20px 5px 10px;overflow:hidden"><div id="p3Bar" style="height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#2563eb)"></div></div>
-<div style="display:flex;justify-content:space-between;padding:0 8px"><b id="p3Pct" style="font-size:22px;color:#22c55e">0%</b><span id="p3Msg" style="font-size:13px;color:#cbd5e1">Connecting to bank...</span></div>
-<p style="color:#aaa;margin-top:30px;font-size:13px">Please wait, do not close.</p>
-</div></div>
-
-<div class="overlayPage" id="page4"><div class="pageBox" style="text-align:center;padding:30px 16px;background:#000"><div class="steps" style="margin:0 0 14px;padding:0"><div class="on"></div><div class="on"></div><div class="on"></div><div class="on"></div></div><div id="resultBox"></div></div></div>
-
-<div class="confirmModal" id="confirmModal"><div class="confirmBox"><h3 style="margin:0">Confirm payment</h3><div id="cfPrice" style="font-size:26px;font-weight:900;margin:10px 0">$19.01</div><div class="c-row"><span>Package</span><b id="cfPack">660 UC</b></div><div class="c-row"><span>UID</span><b id="cfUid">—</b></div><div class="c-row"><span>Username</span><b id="cfUser">—</b></div><div class="c-row"><span>Order ID</span><b id="cfOrder">—</b></div><div class="c-row"><span>Pay With</span><b id="cfPay">VISA</b></div><div style="display:flex;gap:9px;margin-top:16px"><button onclick="closeConfirm()" style="flex:1;background:#edf1f7;color:#111;box-shadow:none">Cancel</button><button onclick="confirmPayNow()" style="flex:1">Pay</button></div></div></div>
-<div id="pinOverlay"><div id="pinBox"><h3>🔒 Admin PIN</h3><p>Enter PIN to open settings</p><input type="password" id="pinInput" placeholder="••••" maxlength="4" inputmode="numeric"><p id="pinError" style="color:#ff1744;display:none">❌ Wrong PIN!</p><div style="display:flex;gap:8px"><button onclick="checkPin()" style="flex:1">UNLOCK</button><button onclick="closePin()" style="flex:1;background:#333;color:#fff;box-shadow:none">Cancel</button></div></div></div>
-
-<footer><div class="foot-top"><div class="foot-left"><h2 id="storeNameFoot">LADLA GAME STORE</h2><p><span id="storeDescFoot">LADLA GAME STORE</span> is your recharge store.</p><div class="pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>USDT</span><span>Bitcoin</span></div></div><div class="foot-right"><h4>Contact us</h4><p>If you need any help, please click on "Customer Service" to contact us</p><button class="cs-btn">✉️ Customer Service</button></div></div><div class="contact-box"><p>📞 <b>Official Contact:</b> <span id="showContact">Not set yet</span></p><p>📍 <b>Address:</b> <span id="showAddress">Not set yet</span></p><p>💻 <b>Developed By: Binrao</b></p></div><div class="bottom"><span>Terms | Privacy | Cookie</span><span>Copyright © <span id="storeCopyFoot">LADLA GAME STORE</span>. All rights reserved.</span></div></footer>
-
-<script>
-// ===== PWA INSTALL =====
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBtn').classList.add('show');});
-function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('installBtn').classList.remove('show');});}else{alert('Chrome me: 3 dots (⋮) > Install App / Add to Home Screen dabao\nAgar option nahi aa raha to site ko HTTPS (Netlify / GitHub Pages) pe upload karo - file:// pe Install nahi aata.');}}
-window.addEventListener('appinstalled',()=>{document.getElementById('installBtn').classList.remove('show');});
-if('serviceWorker' in navigator){const swCode=`self.addEventListener('install',e=>{self.skipWaiting()});self.addEventListener('activate',e=>{self.clients.claim()});self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>new Response('Offline')))})`;const swBlob=new Blob([swCode],{type:'text/javascript'});navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});}
-
-// ===== PHOTO FIX - COMPRESS KARKE SAVE KARO, TAAKE GAYAB NA HO =====
-// Pehle photo 3-4MB ki hoti thi, localStorage full ho jata tha aur photo delete ho jati thi. Ab 700px + 0.65 quality = ~60KB, kabhi gayab nahi hogi.
-function compressImage(file, cb){
-  let r=new FileReader();
-  r.onload=e=>{
-    let img=new Image();
-    img.onload=()=>{
-      let c=document.createElement('canvas');
-      let w=img.width,h=img.height,maxW=700;
-      if(w>maxW){h=h*maxW/w;w=maxW;}
-      c.width=w;c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
-      cb(c.toDataURL('image/jpeg',0.65));
-    };
-    img.src=e.target.result;
-  };
-  r.readAsDataURL(file);
-}
-function safeSave(key,val){
-  try{localStorage.setItem(key,val);return true;}
-  catch(e){alert('⚠️ Storage full! Purani 1-2 photo delete karo, phir nayi add hogi.');return false;}
-}
-
-const ADMIN_PIN="5425";let clickCount=0,clickTimer=null;
-function secretClick(){clickCount++;if(clickTimer)clearTimeout(clickTimer);clickTimer=setTimeout(()=>{clickCount=0},2000);if(clickCount>=5){clickCount=0;document.getElementById('pinOverlay').style.display='flex';document.getElementById('pinInput').value='';document.getElementById('pinError').style.display='none';}}
-function checkPin(){const v=document.getElementById('pinInput').value.trim();if(v===ADMIN_PIN){document.getElementById('pinOverlay').style.display='none';document.getElementById('settingsCard').style.display='block';document.getElementById('settingsCard').scrollIntoView({behavior:'smooth'});}else{document.getElementById('pinError').style.display='block';document.getElementById('pinInput').value='';}}
-function closePin(){document.getElementById('pinOverlay').style.display='none';}
-function lockSettings(){document.getElementById('settingsCard').style.display='none';window.scrollTo({top:0,behavior:'smooth'});}
-document.getElementById('pinInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPin();});
-const BANNERS=["🔥 Trending Topups<br>Fast • Secure • Instant","⚡ 100% Fast Delivery<br>ID Will Not Be Banned","🛡️ 100% Safe & Trusted<br>24/7 Support","💯 100% Money Back Policy<br>LADLA GAME STORE","🎮 25K - 200K Packs<br>Best Price in $","🔥 New Offer - Limited Time<br>Buy Now"];
-let bannerIdx=0;let mainBannerPhotos=JSON.parse(localStorage.getItem('deal_main_banners')||'[]');let mainBannerIdx=0;
-function renderMainBanner(){let el=document.getElementById('banner');if(!mainBannerPhotos.length){el.innerHTML='<span id="bannerText">'+BANNERS[bannerIdx]+'</span><div class="banner-dots" id="bannerDots"></div>';document.getElementById('bannerDots').innerHTML=BANNERS.map((_,i)=>`<i class="${i===bannerIdx?'on':''}"></i>`).join('');return;}let imgs=mainBannerPhotos.map((src,i)=>`<img src="${src}" class="main-banner-img ${i===mainBannerIdx?'show':''}">`).join('');el.innerHTML=imgs+'<div class="banner-overlay"></div><span id="bannerText">'+BANNERS[bannerIdx]+'</span><div class="banner-dots" id="bannerDots"></div>';document.getElementById('bannerDots').innerHTML=mainBannerPhotos.map((_,i)=>`<i class="${i===mainBannerIdx?'on':''}"></i>`).join('');}
-function rotateBanner(){bannerIdx=(bannerIdx+1)%BANNERS.length;if(mainBannerPhotos.length){mainBannerIdx=(mainBannerIdx+1)%mainBannerPhotos.length;}renderMainBanner();}
-setInterval(rotateBanner,2500);
-function renderBannerPhotosList(){let el=document.getElementById('bannerPhotosList');if(!el)return;document.getElementById('bannerCountText').textContent='Now '+mainBannerPhotos.length+' Banners - No Limit';if(!mainBannerPhotos.length){el.innerHTML='<p style="color:#aaa;font-size:12px">No banner yet.</p>';return;}el.innerHTML=mainBannerPhotos.map((src,i)=>`<div class="banner-item"><img src="${src}"><button onclick="deleteBannerPhoto(${i})">🗑️ Delete</button></div>`).join('');}
-function uploadBannerPhotos(e){let files=Array.from(e.target.files||[]);if(!files.length)return;let done=0;files.forEach(f=>{compressImage(f,(small)=>{mainBannerPhotos.push(small);done++;if(done===files.length){safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));renderBannerPhotosList();renderMainBanner();alert('✅ '+files.length+' Banners Added! Ab gayab nahi honge');}});});e.target.value='';}
-function deleteBannerPhoto(i){if(!confirm('Delete this banner?'))return;mainBannerPhotos.splice(i,1);safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));if(mainBannerIdx>=mainBannerPhotos.length)mainBannerIdx=0;renderBannerPhotosList();renderMainBanner();}
-function clearAllBanners(){if(!confirm('Delete all banners?'))return;mainBannerPhotos=[];safeSave('deal_main_banners','[]');renderBannerPhotosList();renderMainBanner();}
-function saveMainBanners(){safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));alert('✅ Main Banners Saved!');}
-let storeName=localStorage.getItem('deal_store_name')||"LADLA GAME STORE";
-let storeTagline=localStorage.getItem('deal_store_tagline')||"Trending Topups • Fast • Secure • Instant";
-function applyStoreName(){storeName=document.getElementById('storeNameInput').value.trim()||"LADLA GAME STORE";storeTagline=document.getElementById('storeTaglineInput').value.trim()||"Trending Topups • Fast • Secure • Instant";localStorage.setItem('deal_store_name',storeName);localStorage.setItem('deal_store_tagline',storeTagline);updateStoreNameUI();alert('✅ Store Name Changed: '+storeName);}
-function updateStoreNameUI(){document.getElementById('storeNameTop').textContent=storeName;document.getElementById('storeTaglineTop').textContent=storeTagline;document.getElementById('storeNameFoot').textContent=storeName;document.getElementById('storeDescFoot').textContent=storeName;document.getElementById('storeCopyFoot').textContent=storeName;document.title=storeName;document.getElementById('storeNameInput').value=storeName;document.getElementById('storeTaglineInput').value=storeTagline;document.getElementById('logo').innerHTML=localStorage.getItem('deal_logo')?'<img src="'+localStorage.getItem('deal_logo')+'">':'<span>'+storeName.slice(0,2).toUpperCase()+'</span>';}
-
-// ===== THEMES 20 = 10 STATIC + 10 ANIMATED =====
-const THEMES=[
-{id:"photo1",name:"1. Peach Glass",bg:"radial-gradient(1200px 600px at 10% 0%, #3b0f3a 0%, transparent 60%), radial-gradient(1000px 500px at 100% 20%, #ff5e3a 0%, transparent 55%), radial-gradient(800px 600px at 50% 100%, #ff8a5c 0%, transparent 60%), #0a050a",accent:"#FFC9A3",banner:"linear-gradient(135deg,#FF5E8A,#A855F7,#FF8A5C,#FFC9A3)",btn:"linear-gradient(135deg,#FF5E8A,#A855F7)",glow:"0 10px 40px rgba(255,94,138,.45)",anim:false},
-{id:"redfire",name:"2. Red Fire",bg:"radial-gradient(1000px 500px at 0% 0%, #ff2d2d 0%, transparent 60%), radial-gradient(900px 600px at 100% 100%, #7f1d1d 0%, transparent 60%), #0a0505",accent:"#FF6B6B",banner:"linear-gradient(135deg,#FF2D2D,#FF8A00,#FF2D2D)",btn:"linear-gradient(135deg,#FF2D2D,#FF8A00)",glow:"0 10px 40px rgba(255,45,45,.5)",anim:false},
-{id:"greenglow",name:"3. Green Neon",bg:"radial-gradient(1000px 500px at 0% 0%, #00ff88 0%, transparent 55%), radial-gradient(900px 500px at 100% 100%, #14532d 0%, transparent 60%), #020a05",accent:"#4ADE80",banner:"linear-gradient(135deg,#00FF88,#14532D,#4ADE80)",btn:"linear-gradient(135deg,#00FF88,#059669)",glow:"0 10px 40px rgba(0,255,136,.45)",anim:false},
-{id:"ocean",name:"4. Ocean Dream",bg:"radial-gradient(1000px 600px at 0% 0%, #2563eb 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #06b6d4 0%, transparent 60%), #020617",accent:"#7DD3FC",banner:"linear-gradient(135deg,#2563EB,#06B6D4,#7DD3FC)",btn:"linear-gradient(135deg,#2563EB,#06B6D4)",glow:"0 10px 40px rgba(37,99,235,.5)",anim:false},
-{id:"royal",name:"5. Royal Purple Gold",bg:"radial-gradient(1000px 600px at 0% 0%, #9333ea 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #d97706 0%, transparent 60%), #0f0520",accent:"#E9D5FF",banner:"linear-gradient(135deg,#9333EA,#F59E0B,#C084FC)",btn:"linear-gradient(135deg,#9333EA,#F59E0B)",glow:"0 10px 40px rgba(147,51,234,.5)",anim:false},
-{id:"sunset",name:"6. Sunset",bg:"radial-gradient(1000px 600px at 0% 0%, #ff5e3a 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #ec4899 0%, transparent 60%), #120800",accent:"#FDBA74",banner:"linear-gradient(135deg,#FF5E8A,#EC4899,#FDBA74)",btn:"linear-gradient(135deg,#FF5E8A,#EC4899)",glow:"0 10px 40px rgba(255,94,58,.5)",anim:false},
-{id:"midnight",name:"7. Midnight Aurora",bg:"radial-gradient(1000px 600px at 0% 0%, #22d3ee 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #7c3aed 0%, transparent 60%), #000814",accent:"#A5F3FC",banner:"linear-gradient(135deg,#22D3EE,#7C3AED,#22D3EE)",btn:"linear-gradient(135deg,#22D3EE,#7C3AED)",glow:"0 10px 40px rgba(34,211,238,.5)",anim:false},
-{id:"emeraldlux",name:"8. Emerald Luxury",bg:"radial-gradient(1000px 600px at 0% 0%, #059669 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #f59e0b 0%, transparent 60%), #02120d",accent:"#6EE7B7",banner:"linear-gradient(135deg,#059669,#F59E0B,#6EE7B7)",btn:"linear-gradient(135deg,#059669,#F59E0B)",glow:"0 10px 40px rgba(5,150,105,.5)",anim:false},
-{id:"barbie",name:"9. Barbie Glow",bg:"radial-gradient(1000px 600px at 0% 0%, #ec4899 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #a855f7 0%, transparent 60%), #160a12",accent:"#F9A8D4",banner:"linear-gradient(135deg,#EC4899,#A855F7,#F9A8D4)",btn:"linear-gradient(135deg,#EC4899,#A855F7)",glow:"0 10px 40px rgba(236,72,153,.5)",anim:false},
-{id:"cyber",name:"10. Cyber Neon",bg:"radial-gradient(1000px 600px at 0% 0%, #00ffcc 0%, transparent 60%), radial-gradient(900px 500px at 100% 100%, #ff00cc 0%, transparent 60%), #05010f",accent:"#00FFCC",banner:"linear-gradient(135deg,#00FFCC,#FF00CC,#00FFCC)",btn:"linear-gradient(135deg,#00FFCC,#FF00CC)",glow:"0 10px 40px rgba(0,255,204,.5)",anim:false},
-// ===== 11-20 ANIMATION WALE =====
-{id:"animFire",name:"11. ✨ Anim Fire Flow",bg:"linear-gradient(135deg,#ff2d2d,#ff8a00,#ff2d55,#ffcc00)",accent:"#FFB199",banner:"linear-gradient(135deg,#FF2D2D,#FF8A00,#FF2D55)",btn:"linear-gradient(135deg,#FF2D2D,#FF8A00)",glow:"0 10px 40px rgba(255,45,45,.6)",anim:true},
-{id:"animOcean",name:"12. ✨ Anim Ocean Wave",bg:"linear-gradient(135deg,#2563eb,#06b6d4,#22d3ee,#3b82f6)",accent:"#A5F3FC",banner:"linear-gradient(135deg,#2563EB,#06B6D4,#22D3EE)",btn:"linear-gradient(135deg,#2563EB,#06B6D4)",glow:"0 10px 40px rgba(37,99,235,.6)",anim:true},
-{id:"animGalaxy",name:"13. ✨ Anim Galaxy",bg:"linear-gradient(135deg,#6366f1,#ec4899,#06b6d4,#a855f7)",accent:"#C7D2FE",banner:"linear-gradient(135deg,#6366F1,#EC4899,#06B6D4)",btn:"linear-gradient(135deg,#6366F1,#EC4899)",glow:"0 10px 40px rgba(99,102,241,.6)",anim:true},
-{id:"animMint",name:"14. ✨ Anim Mint Flow",bg:"linear-gradient(135deg,#5eead4,#34d399,#22d3ee,#a7f3d0)",accent:"#99F6E4",banner:"linear-gradient(135deg,#5EEAD4,#34D399,#99F6E4)",btn:"linear-gradient(135deg,#5EEAD4,#34D399)",glow:"0 10px 40px rgba(94,234,212,.6)",anim:true},
-{id:"animSunset",name:"15. ✨ Anim Sunset",bg:"linear-gradient(135deg,#ff5e8a,#ec4899,#fdbA74,#f59e0b)",accent:"#FDBA74",banner:"linear-gradient(135deg,#FF5E8A,#EC4899,#FDBA74)",btn:"linear-gradient(135deg,#FF5E8A,#EC4899)",glow:"0 10px 40px rgba(255,94,58,.6)",anim:true},
-{id:"animRoyal",name:"16. ✨ Anim Royal",bg:"linear-gradient(135deg,#9333ea,#f59e0b,#c084fc,#fbbf24)",accent:"#E9D5FF",banner:"linear-gradient(135deg,#9333EA,#F59E0B,#C084FC)",btn:"linear-gradient(135deg,#9333EA,#F59E0B)",glow:"0 10px 40px rgba(147,51,234,.6)",anim:true},
-{id:"animGreen",name:"17. ✨ Anim Green Neon",bg:"linear-gradient(135deg,#00ff88,#059669,#a3e635,#4ade80)",accent:"#4ADE80",banner:"linear-gradient(135deg,#00FF88,#059669,#4ADE80)",btn:"linear-gradient(135deg,#00FF88,#059669)",glow:"0 10px 40px rgba(0,255,136,.6)",anim:true},
-{id:"animPink",name:"18. ✨ Anim Pink Glow",bg:"linear-gradient(135deg,#ec4899,#a855f7,#f9a8d4,#f472b6)",accent:"#F9A8D4",banner:"linear-gradient(135deg,#EC4899,#A855F7,#F9A8D4)",btn:"linear-gradient(135deg,#EC4899,#A855F7)",glow:"0 10px 40px rgba(236,72,153,.6)",anim:true},
-{id:"animGold",name:"19. ✨ Anim Gold",bg:"linear-gradient(135deg,#f59e0b,#fde68a,#fbbf24,#fff7ed)",accent:"#FDE68A",banner:"linear-gradient(135deg,#F59E0B,#FDE68A,#FBBF24)",btn:"linear-gradient(135deg,#F59E0B,#FDE68A)",glow:"0 10px 40px rgba(245,158,11,.6)",anim:true},
-{id:"animRainbow",name:"20. ✨ Anim Rainbow",bg:"linear-gradient(135deg,#ef4444,#f59e0b,#22c55e,#3b82f6,#a855f7,#ec4899)",accent:"#fff",banner:"linear-gradient(135deg,#EF4444,#F59E0B,#22C55E,#3B82F6)",btn:"linear-gradient(135deg,#EF4444,#A855F7)",glow:"0 10px 40px rgba(168,85,247,.6)",anim:true}
-];
-let currentTheme=localStorage.getItem('deal_theme')||"photo1";
-function applyTheme(id){const t=THEMES.find(x=>x.id===id)||THEMES[0];currentTheme=id;const r=document.documentElement.style;r.setProperty('--bg',t.bg);r.setProperty('--accent',t.accent);r.setProperty('--banner',t.banner);r.setProperty('--btn-bg',t.btn);r.setProperty('--glow',t.glow);document.body.classList.toggle('theme-anim',!!t.anim);localStorage.setItem('deal_theme',id);renderThemeGrid();}
-function renderThemeGrid(){const el=document.getElementById('themeGrid');if(!el)return;el.innerHTML=THEMES.map(t=>`<div class="theme-opt ${t.id===currentTheme?'selected':''}" onclick="applyTheme('${t.id}')" style="background:${t.banner}">${t.name}</div>`).join('');}
-function saveTheme(){localStorage.setItem('deal_theme',currentTheme);alert('✅ Theme Saved! 20 Themes');}
-function makeBigPacks(unit){return [{name:"25K "+unit,price:"$300",photo:""},{name:"50K "+unit,price:"$600",photo:""},{name:"75K "+unit,price:"$900",photo:""},{name:"100K "+unit,price:"$1200",photo:""},{name:"125K "+unit,price:"$1500",photo:""},{name:"150K "+unit,price:"$1800",photo:""},{name:"175K "+unit,price:"$2100",photo:""},{name:"200K "+unit,price:"$2500",photo:""}];}
-let defaultGames=[
-{name:"PUBG Mobile UC",cat:"Battle Royale",price:"From $300",badge:"HOT",color:"#FF5E8A",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"PUBG ID",fixedUser:"KALEOZ_122",fixedUid:"3613225095",packs:makeBigPacks("UC")},
-{name:"BGMI UC",cat:"Battle Royale",price:"From $300",badge:"HOT",color:"#FF8A00",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"BGMI ID",fixedUser:"KALEOZ_122",fixedUid:"3613225095",packs:makeBigPacks("UC")},
-{name:"Free Fire Diamonds",cat:"Diamonds",price:"From $300",badge:"HOT",color:"#FF5E8A",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"Free Fire ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds")},
-{name:"Free Fire MAX Diamonds",cat:"Diamonds",price:"From $300",badge:"TRENDING",color:"#EC4899",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"Free Fire MAX ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds")},
-{name:"COD Mobile CP",cat:"Battle Royale",price:"From $300",badge:"TRENDING",color:"#2563EB",icon:"🪖",photo:"",iconPhoto:"",banners:[],userLabel:"COD UID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("CP")},
-{name:"Mobile Legends Diamonds",cat:"Diamonds",price:"From $300",badge:"TRENDING",color:"#06B6D4",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"MLBB ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds")},
-{name:"TikTok Coins",cat:"Coins",price:"From $300",badge:"HOT",color:"#EC4899",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"TikTok Username",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Coins")},
-{name:"Valorant Points",cat:"Coins",price:"From $300",badge:"TRENDING",color:"#059669",icon:"🔴",photo:"",iconPhoto:"",banners:[],userLabel:"Riot ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("VP")}];
-let games=JSON.parse(localStorage.getItem('deal_games')||'null')||defaultGames;
-games=games.map(g=>{let pk=g.packs;if(!Array.isArray(pk))pk=makeBigPacks("UC");pk=pk.map(p=>({name:p.name||"Pack",price:p.price||"$300",photo:p.photo||""}));let banners=g.banners||(g.photo?[g.photo]:[]);return {...g,photo:g.photo||"",iconPhoto:g.iconPhoto||"",banners:banners,userLabel:g.userLabel||"Player ID",fixedUser:g.fixedUser||"BINRAO",fixedUid:g.fixedUid||"5308075875",packs:pk};});
-try{localStorage.setItem('deal_games',JSON.stringify(games));}catch(e){}
-let filters=JSON.parse(localStorage.getItem('deal_filters')||'null')||["All","Trending","Battle Royale","Diamonds","Coins"];
-let activeFilter="All";let orders=JSON.parse(localStorage.getItem('deal_orders')||'[]');
-let defaultStatus=localStorage.getItem('deal_default_status')||"Pending";
-let pendingReason=localStorage.getItem('deal_pending_reason')||"Server is busy, please wait.";
-let failedReason=localStorage.getItem('deal_failed_reason')||"Payment not verified. Please try again or contact Customer Service.";
-function updateDefaultUI(){const a=document.getElementById('defSuccess');if(!a)return;document.getElementById('defSuccess').classList.toggle('on',defaultStatus==="Success");document.getElementById('defPending').classList.toggle('on',defaultStatus==="Pending");document.getElementById('defFailed').classList.toggle('on',defaultStatus==="Failed");document.getElementById('defaultStatusText').textContent="Current: "+(defaultStatus==="Success"?"✅ Success":defaultStatus==="Failed"?"❌ Failed":"⏳ Pending");document.getElementById('pendingReason').value=pendingReason;document.getElementById('failedReason').value=failedReason;}
-function setDefaultStatus(s){defaultStatus=s;localStorage.setItem('deal_default_status',s);updateDefaultUI();}
-function saveOrderSettings(){localStorage.setItem('deal_default_status',defaultStatus);alert('✅ Order Settings Saved! Next order will be '+defaultStatus);}
-function saveReasonSettings(){pendingReason=document.getElementById('pendingReason').value;failedReason=document.getElementById('failedReason').value;localStorage.setItem('deal_pending_reason',pendingReason);localStorage.setItem('deal_failed_reason',failedReason);alert('✅ Reasons Saved!');}
-function savePaymentSettings(){localStorage.setItem('deal_payCard',document.getElementById('payCard').checked?'1':'0');localStorage.setItem('deal_payApple',document.getElementById('payApple').checked?'1':'0');localStorage.setItem('deal_payUsdt',document.getElementById('payUsdt').checked?'1':'0');localStorage.setItem('deal_payBtc',document.getElementById('payBtc').checked?'1':'0');updatePay();alert('✅ Payment Settings Saved!');}
-function saveFilterSettings(){const f=document.getElementById('filterInput').value.split(',').map(s=>s.trim()).filter(Boolean);if(f.length){filters=f;localStorage.setItem('deal_filters',JSON.stringify(filters));renderAll();}alert('✅ Filters Saved!');}
-function saveLogo(){const inp=document.getElementById('logoInput');if(!inp.files[0]){alert('First select logo photo');return;}compressImage(inp.files[0],(small)=>{safeSave('deal_logo',small);updateStoreNameUI();alert('✅ Logo Saved!');});}
-function saveContact(){localStorage.setItem('deal_contact',document.getElementById('contactInput').value);localStorage.setItem('deal_address',document.getElementById('addressInput').value);loadAll();alert('✅ Contact Saved!');}
-function saveGame(i){collectGames();safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Game '+(i+1)+' Saved!');}
-function collectGames(){games.forEach((g,i)=>{let n=document.querySelector('[data-name="'+i+'"]');if(n)g.name=n.value;let c=document.querySelector('[data-cat="'+i+'"]');if(c)g.cat=c.value;let pr=document.querySelector('[data-price="'+i+'"]');if(pr)g.price=pr.value;let b=document.querySelector('[data-badge="'+i+'"]');if(b)g.badge=b.value;let ic=document.querySelector('[data-icon="'+i+'"]');if(ic)g.icon=ic.value;let ul=document.querySelector('[data-userlabel="'+i+'"]');if(ul)g.userLabel=ul.value;let fu=document.querySelector('[data-fixeduser="'+i+'"]');if(fu)g.fixedUser=fu.value;let fuid=document.querySelector('[data-fixeduid="'+i+'"]');if(fuid)g.fixedUid=fuid.value;g.packs.forEach((p,pi)=>{let pn=document.querySelector('[data-packname="'+i+'-'+pi+'"]');if(pn)p.name=pn.value;let pp=document.querySelector('[data-packprice="'+i+'-'+pi+'"]');if(pp)p.price=pp.value;});});}
-function saveAll(){collectGames();safeSave('deal_games',JSON.stringify(games));document.getElementById('savedMsg').style.display='block';setTimeout(()=>{document.getElementById('savedMsg').style.display='none';},2000);alert('✅ All Saved!');}
-function exportBackup(){let data={games:games,orders:orders,storeName:storeName,storeTagline:storeTagline,defaultStatus:defaultStatus};navigator.clipboard.writeText(JSON.stringify(data)).then(()=>alert('✅ Backup Copied!'));}
-function importBackup(){let s=prompt('Paste Backup Here');if(!s)return;try{let d=JSON.parse(s);if(d.games)games=d.games;if(d.orders)orders=d.orders;if(d.storeName)storeName=d.storeName;localStorage.setItem('deal_games',JSON.stringify(games));localStorage.setItem('deal_orders',JSON.stringify(orders));localStorage.setItem('deal_store_name',storeName);location.reload();}catch(e){alert('❌ Invalid Backup');}}
-function addGame(){let name=document.getElementById('newName').value.trim();if(!name){alert('Enter Game Name');return;}games.push({name:name,cat:document.getElementById('newCat').value||"Battle Royale",price:document.getElementById('newPrice').value||"From $300",badge:document.getElementById('newBadge').value||"HOT",color:"#FF5E8A",icon:document.getElementById('newIcon').value||"🎮",photo:"",iconPhoto:"",banners:[],userLabel:document.getElementById('newUserLabel').value||"Player ID",fixedUser:document.getElementById('newFixedUser').value||"BINRAO",fixedUid:document.getElementById('newFixedUid').value||"5308075875",packs:makeBigPacks("UC")});safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Game Added!');}
-function deleteGame(i){if(!confirm('Delete '+games[i].name+'?'))return;games.splice(i,1);safeSave('deal_games',JSON.stringify(games));renderAll();}
-function uploadGameIcon(e,i){const f=e.target.files[0];if(!f)return;compressImage(f,(small)=>{collectGames();games[i].iconPhoto=small;safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Game Icon Photo Added! Ab fix rahegi');});}
-function removeGameIcon(i){collectGames();games[i].iconPhoto="";safeSave('deal_games',JSON.stringify(games));renderAll();}
-function uploadGameBanners(e,i){let files=Array.from(e.target.files||[]);if(!files.length)return;let done=0;files.forEach(f=>{compressImage(f,(small)=>{collectGames();if(!games[i].banners)games[i].banners=[];games[i].banners.push(small);if(games[i].banners.length===1)games[i].photo=small;done++;if(done===files.length){safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ '+files.length+' Banners Added! No limit - Ab gayab nahi honge');}});});e.target.value='';}
-function deleteGameBanner(gi,bi){collectGames();games[gi].banners.splice(bi,1);if(games[gi].banners.length)games[gi].photo=games[gi].banners[0];else games[gi].photo="";safeSave('deal_games',JSON.stringify(games));renderAll();}
-function clearGameBanners(i){collectGames();games[i].banners=[];games[i].photo="";safeSave('deal_games',JSON.stringify(games));renderAll();}
-function uploadPackPhoto(e,gi,pi){const f=e.target.files[0];if(!f)return;compressImage(f,(small)=>{collectGames();games[gi].packs[pi].photo=small;safeSave('deal_games',JSON.stringify(games));renderAll();});}
-function addPack(gi){collectGames();games[gi].packs.push({name:"New Pack",price:"$300",photo:""});safeSave('deal_games',JSON.stringify(games));renderAll();}
-function deletePack(gi,pi){if(!confirm('Delete pack?'))return;collectGames();games[gi].packs.splice(pi,1);safeSave('deal_games',JSON.stringify(games));renderAll();}
-function updatePay(){let c=document.getElementById('payCard');if(c)c.checked=localStorage.getItem('deal_payCard')!=='0';let a=document.getElementById('payApple');if(a)a.checked=localStorage.getItem('deal_payApple')!=='0';let u=document.getElementById('payUsdt');if(u)u.checked=localStorage.getItem('deal_payUsdt')!=='0';let b=document.getElementById('payBtc');if(b)b.checked=localStorage.getItem('deal_payBtc')!=='0';}
-function loadAll(){let ct=localStorage.getItem('deal_contact');if(ct)document.getElementById('showContact').textContent=ct;let ad=localStorage.getItem('deal_address');if(ad)document.getElementById('showAddress').textContent=ad;document.getElementById('contactInput').value=ct||"";document.getElementById('addressInput').value=ad||"";updateStoreNameUI();updatePay();applyTheme(currentTheme);renderMainBanner();renderAll();}
-let curGame=null,curPack=null,curPay="Apple Pay",verifiedUid=false,verifiedUser="";
-let curOrderId="";let _curCard="";let _curBrand="Apple Pay";
-let gameBannerTimer=null,gameBannerIdx=0;
-function renderFilters(){const bar=document.getElementById('filterBar');bar.innerHTML='';filters.forEach(f=>{const b=document.createElement('button');b.textContent=f;if(f===activeFilter)b.classList.add('active');b.onclick=()=>{activeFilter=f;renderAll();};bar.appendChild(b);});let fi=document.getElementById('filterInput');if(fi)fi.value=filters.join(', ');}
-function gameCard(g,idx){let topInner="";if(g.iconPhoto)topInner=`<img src="${g.iconPhoto}"><div class="overlay"></div><span style="font-size:11px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:10px;position:relative;z-index:2;color:#fff">${g.cat}</span>`;else if(g.photo)topInner=`<img src="${g.photo}"><div class="overlay"></div><span style="font-size:11px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:10px;position:relative;z-index:2;color:#fff">${g.cat}</span>`;else topInner=`<span class="emoji">${g.icon}</span><small style="font-size:10px;background:rgba(0,0,0,.35);padding:2px 6px;border-radius:10px">${g.cat}</small>`;let bg=g.photo||g.iconPhoto?`background:#000`:`background:linear-gradient(135deg,${g.color},#00000066)`;return `<div class="card-game" onclick="openGame(${idx})"><div class="top" style="${bg}">${topInner}</div><div class="inner">${g.badge?`<span class="badge">${g.badge}</span>`:''}<b>${g.name}</b><small>${g.cat} • sold</small><div style="font-size:12px;margin-top:4px">${g.price} • Tap to Buy →</div></div></div>`;}
-function renderAll(){renderFilters();let list=games;if(activeFilter!=="All"&&activeFilter!=="Trending")list=games.filter(g=>g.cat===activeFilter);if(activeFilter==="Trending")list=games.filter(g=>g.badge==="HOT"||g.badge==="TRENDING");document.getElementById('trendingGrid').innerHTML=games.slice(0,8).map((g,i)=>gameCard(g,games.indexOf(g))).join('');document.getElementById('allGrid').innerHTML=list.map(g=>gameCard(g,games.indexOf(g))).join('');renderOrders();renderThemeGrid();updateDefaultUI();renderBannerPhotosList();
-document.getElementById('gamesEditor').innerHTML=games.map((g,i)=>`<div class="game-edit"><div style="display:flex;justify-content:space-between"><b>Box ${i+1} - ${g.name}</b><button class="btn-red" onclick="deleteGame(${i})">🗑️ Delete</button></div><div style="background:#00ff88;color:#000;padding:10px;border-radius:8px;font-size:13px;font-weight:bold;margin:8px 0">1️⃣ MAIN PAGE GAME ICON PHOTO - FIX BOX</div><div class="preview" style="height:105px">${g.iconPhoto?`<img src="${g.iconPhoto}">`:`<span style="color:#fff;font-size:12px">No Icon Photo Yet</span>`}</div><input type="file" accept="image/*" onchange="uploadGameIcon(event,${i})">${g.iconPhoto?`<button class="btn-small" onclick="removeGameIcon(${i})">❌ Remove Icon Photo</button>`:''}<div style="background:#ffcc00;color:#000;padding:10px;border-radius:8px;font-size:13px;font-weight:bold;margin:8px 0">2️⃣ GAME PAGE BANNERS - UNLIMITED</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${(g.banners||[]).map((src,bi)=>`<div class="banner-item"><img src="${src}"><button onclick="deleteGameBanner(${i},${bi})">🗑️</button></div>`).join('')||'<p style="color:#aaa;font-size:12px">No banner yet</p>'}</div><p style="color:#00ff88;font-size:12px;margin:6px 0">${(g.banners||[]).length} Banners - Unlimited</p><label style="color:#FFC9A3">📸 Select Banner Photos - Multiple select kar sakte ho</label><input type="file" accept="image/*" multiple onchange="uploadGameBanners(event,${i})"><button class="btn-small" onclick="clearGameBanners(${i})" style="background:#ff1744;width:100%">🗑️ Delete All Banners</button><input type="text" value="${g.name}" data-name="${i}"><div class="row2"><input type="text" value="${g.cat}" data-cat="${i}"><input type="text" value="${g.price}" data-price="${i}"></div><div class="row2"><input type="text" value="${g.badge}" data-badge="${i}"><input type="text" value="${g.icon}" data-icon="${i}"></div><input type="text" value="${g.userLabel}" data-userlabel="${i}"><div class="row2"><input type="text" value="${g.fixedUser}" data-fixeduser="${i}"><input type="text" value="${g.fixedUid}" data-fixeduid="${i}"></div>${g.packs.map((p,pi)=>`<div class="pack-edit"><b style="color:#fff">📦 Pack ${pi+1} - ${p.name} - ${p.price}</b><div class="p-thumb">${p.photo?`<img src="${p.photo}">`:`<span style="color:#fff">No Photo</span>`}</div><input type="file" accept="image/*" onchange="uploadPackPhoto(event,${i},${pi})"><div class="row2"><input type="text" value="${p.name}" data-packname="${i}-${pi}"><input type="text" value="${p.price}" data-packprice="${i}-${pi}"></div><button class="btn-small" onclick="deletePack(${i},${pi})" style="background:#ff1744;width:100%">🗑️ Delete Pack</button></div>`).join('')}<button onclick="addPack(${i})" class="btn-small" style="width:100%;background:#A855F7">➕ Add New Pack</button><button onclick="saveGame(${i})" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE THIS GAME</button></div>`).join('');}
-function renderOrders(){const el=document.getElementById('ordersList');if(!el)return;if(!orders.length){el.innerHTML=`<p style="color:#aaa;font-size:12px">No orders yet.</p>`;return;}el.innerHTML=orders.map((o,i)=>`<div class="order-row"><b>${o.game} - ${o.pack}</b><br><span style="font-size:12px;color:#333">👤 ${o.username} | UID: ${o.uid} | 💳 ${o.pay} | 💰 ${o.price} | 🆔 ${o.id}</span><br><span>Status: <b>${o.status}</b></span><div style="display:flex;gap:6px;margin-top:8px"><button onclick="setOrderStatus(${i},'Success')" style="flex:1;background:#00c853;box-shadow:none">✅ Success</button><button onclick="setOrderStatus(${i},'Pending')" style="flex:1;background:#ffcc00;color:#000;box-shadow:none">⏳ Pending</button><button onclick="setOrderStatus(${i},'Failed')" style="flex:1;background:#ff1744;box-shadow:none">❌ Failed</button></div></div>`).join('');}
-function setOrderStatus(i,s){orders[i].status=s;localStorage.setItem('deal_orders',JSON.stringify(orders));renderOrders();}
-function clearOrders(){if(!confirm('Delete all orders?'))return;orders=[];localStorage.setItem('deal_orders','[]');renderOrders();}
-function openGame(idx){curGame=games[idx];verifiedUid=false;verifiedUser="";curPack=curGame.packs[0];gameBannerIdx=0;if(gameBannerTimer)clearInterval(gameBannerTimer);document.getElementById('p1Title').textContent=curGame.name;let bannerEl=document.getElementById('p1Banner');let banners=curGame.banners&&curGame.banners.length?curGame.banners:(curGame.photo?[curGame.photo]:[]);if(banners.length){bannerEl.innerHTML=`<img id="gameBannerImg" src="${banners[0]}"><div class="db-overlay"></div><div class="db-text"><h1>${curGame.name.toUpperCase()}</h1><p>FAST & SECURE TOP-UP 🔥</p></div>`;if(banners.length>1){gameBannerTimer=setInterval(()=>{gameBannerIdx=(gameBannerIdx+1)%banners.length;let im=document.getElementById('gameBannerImg');if(im)im.src=banners[gameBannerIdx];},2500);}}else{bannerEl.innerHTML=`<div class="db-overlay"></div><div class="db-text"><h1>${curGame.name.toUpperCase()}</h1><p>FAST & SECURE TOP-UP 🔥</p></div>`;}document.getElementById('packsTitle').textContent=`${curGame.icon} ${curGame.name.toUpperCase()} PACKS`;document.getElementById('soldScroll').innerHTML=curGame.packs.map(p=>`<div class="sold-card"><div class="s-emoji">${curGame.iconPhoto?`<img src="${curGame.iconPhoto}" style="width:40px;height:40px;border-radius:10px;object-fit:cover">`:curGame.icon}</div><b>${p.name}</b><small>3 days ago</small></div>`).join('');document.getElementById('packGrid').innerHTML=curGame.packs.map((p,pi)=>`<div class="pack ${pi===0?'sel':''}" onclick="selectPack(${pi})"><div class="pk-img">${p.photo?`<img src="${p.photo}">`:`<span style="font-size:34px">${curGame.icon}</span>`}<span class="pk-check">✓</span></div><b>${p.name}</b><div style="font-size:11px;color:#aaa">${p.price}</div><button class="pack-buy" onclick="event.stopPropagation();selectPack(${pi});buyNowPack(${pi})">🛒 Buy Now</button></div>`).join('');document.getElementById('usernameLabel').textContent=curGame.userLabel;document.getElementById('usernameInput').value='';document.getElementById('usernameError').style.display='none';document.getElementById('usernameOk').style.display='none';document.getElementById('verifiedCard').style.display='none';document.getElementById('afterVerify').style.display='none';document.getElementById('page1').style.display='block';window.scrollTo(0,0);}
-function buyNowPack(pi){selectPack(pi);if(!verifiedUid){alert('❌ First Verify UID!');document.getElementById('usernameInput').focus();return;}goToPayment();}
-function verifyUid(){const v=document.getElementById('usernameInput').value.trim();if(!v){document.getElementById('usernameError').style.display='block';return;}if(v===curGame.fixedUid){verifiedUid=true;verifiedUser=curGame.fixedUser;document.getElementById('usernameError').style.display='none';document.getElementById('usernameOk').style.display='block';document.getElementById('usernameOk').textContent='✅ Connected - '+curGame.fixedUser;document.getElementById('verifiedCard').style.display='block';document.getElementById('verifiedCard').innerHTML=`<div class="verify-card"><div class="v-left"><b>≡ ${curGame.fixedUser} ≡</b><p>Player ID: ${curGame.fixedUid}</p></div><button class="v-arrow" onclick="logoutAccount()">⇄</button></div>`;document.getElementById('afterVerify').style.display='block';}else{document.getElementById('usernameError').style.display='block';document.getElementById('usernameError').textContent='❌ Wrong ID!';document.getElementById('usernameOk').style.display='none';document.getElementById('verifiedCard').style.display='none';document.getElementById('afterVerify').style.display='none';}}
-function logoutAccount(){verifiedUid=false;verifiedUser="";document.getElementById('verifiedCard').style.display='none';document.getElementById('afterVerify').style.display='none';document.getElementById('usernameOk').style.display='none';document.getElementById('usernameInput').value='';}
-function selectPack(pi){curPack=curGame.packs[pi];document.querySelectorAll('#packGrid .pack').forEach((el,i)=>{el.classList.toggle('sel',i===pi);});}
-function closeFlow(){['page1','page2','page3','page4'].forEach(id=>{let e=document.getElementById(id);if(e)e.style.display='none';});if(gameBannerTimer)clearInterval(gameBannerTimer);}
-function backToPage1(){document.getElementById('page2').style.display='none';document.getElementById('page4').style.display='none';document.getElementById('page1').style.display='block';}
-function goToPayment(){if(!verifiedUid){alert('❌ First Verify Correct UID!');return;}curOrderId="DS-"+Date.now().toString().slice(-6)+Math.floor(1000+Math.random()*9000);document.getElementById('page1').style.display='none';document.getElementById('p2UserTop').innerHTML=`<div style="display:flex;justify-content:space-between"><div><b>≡ ${verifiedUser} ≡</b><br><span style="color:#aab8c5;font-size:13px">Player ID: ${curGame.fixedUid}</span></div><span>⇄</span></div>`;document.getElementById('p2Summary').innerHTML=`<div style="display:flex;justify-content:space-between"><span style="color:#facc15;font-size:13px;font-weight:bold">1 PACK SELECTED</span><span style="color:#94a3b8;font-size:13px">Total</span></div><div style="display:flex;justify-content:space-between;margin-top:8px"><b style="font-size:22px">${curPack.name}</b><b style="font-size:22px;color:#facc15">${curPack.price}</b></div><div style="font-size:13px;color:#facc15;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15)">🆔 Order ID: ${curOrderId}</div>`;let methods=[];if(localStorage.getItem('deal_payApple')!=='0')methods.push({id:"Apple Pay",brand:"Apple Pay"});if(localStorage.getItem('deal_payCard')!=='0'){methods.push({id:"Visa Credit",brand:"VISA"});methods.push({id:"Debit Card",brand:"Mastercard"});}if(localStorage.getItem('deal_payUsdt')!=='0')methods.push({id:"USDT",brand:"USDT"});if(localStorage.getItem('deal_payBtc')!=='0')methods.push({id:"Bitcoin",brand:"Bitcoin"});if(!methods.length)methods.push({id:"Apple Pay",brand:"Apple Pay"});curPay=methods[0].id;_curBrand=methods[0].brand;_curCard=methods[0].id==="Visa Credit"?"•••• 4821":methods[0].id==="Debit Card"?"•••• 7310":"";let html=`<div class="pay-voltra"><div style="padding:10px 10px 4px;font-weight:800;font-size:14px;color:#111">Payment method</div>`;methods.forEach((m,mi)=>{let logo="",sub="";if(m.id==="Apple Pay"){logo=`<div class="pay-logo apple"><span style="font-size:16px;font-weight:900;margin-left:2px">Pay</span></div>`;sub=`<b style="font-size:15px;color:#111">Apple Pay</b><br><small style="color:#64748b">Pay with Face ID</small>`;}if(m.id==="Visa Credit"){logo=`<div class="pay-logo visa">VISA</div>`;sub=`<b style="font-size:15px;color:#111">Visa Credit</b><br><small style="color:#64748b">•••• 4821</small>`;}if(m.id==="Debit Card"){logo=`<div class="pay-logo"><div class="mc-c"><i></i><i></i></div></div>`;sub=`<b style="font-size:15px;color:#111">Debit Card</b><br><small style="color:#64748b">Mastercard •••• 7310</small>`;}if(m.id==="USDT"){logo=`<div class="pay-logo">₮</div>`;sub=`<b>USDT</b><br><small style="color:#64748b">Tether</small>`;}if(m.id==="Bitcoin"){logo=`<div class="pay-logo">₿</div>`;sub=`<b>Bitcoin</b><br><small style="color:#64748b">BTC</small>`;}html+=`<div class="pay-row ${mi===0?'sel':''}" onclick="selectVoltraPay(${mi},'${m.id}','${m.brand}')">${logo}<div>${sub}</div><div class="pay-radio"></div></div>`;});html+=`</div>`;document.getElementById('payMethods').innerHTML=html;document.getElementById('page2').style.display='block';window.scrollTo(0,0);}
-function selectVoltraPay(mi,id,brand){curPay=id;_curBrand=brand;_curCard=id==="Visa Credit"?"•••• 4821":id==="Debit Card"?"•••• 7310":"";document.querySelectorAll('.pay-row').forEach((el,i)=>{el.classList.toggle('sel',i===mi);});}
-function goToLoading(){let payName=curPay+" "+_curCard;document.getElementById('cfPrice').textContent=curPack.price;document.getElementById('cfPack').textContent=curPack.name;document.getElementById('cfUid').textContent=curGame.fixedUid;document.getElementById('cfUser').textContent=verifiedUser||curGame.fixedUser;document.getElementById('cfOrder').textContent=curOrderId;document.getElementById('cfPay').textContent=payName;document.getElementById('confirmModal').classList.add('show');}
-function closeConfirm(){document.getElementById('confirmModal').classList.remove('show');}
-function confirmPayNow(){document.getElementById('confirmModal').classList.remove('show');document.getElementById('page2').style.display='none';document.getElementById('page3').style.display='block';document.getElementById('p3UidLine').textContent="UID: "+curGame.fixedUid+" | "+(verifiedUser||curGame.fixedUser);document.getElementById('p3UserTop').innerHTML="<b>"+(verifiedUser||curGame.fixedUser)+"</b> • "+curPack.name+" • "+curPack.price+" • Order: "+curOrderId;let pct=0;let bar=document.getElementById('p3Bar');let pctEl=document.getElementById('p3Pct');let msg=document.getElementById('p3Msg');let timer=setInterval(()=>{pct+=5;if(pct>100)pct=100;bar.style.width=pct+"%";pctEl.textContent=pct+"%";if(pct<40)msg.textContent="Connecting to bank...";else if(pct<70)msg.textContent="Verifying payment...";else if(pct<95)msg.textContent="Transferring...";else msg.textContent="Completing...";if(pct>=100){clearInterval(timer);setTimeout(showFinalReceipt,500);}},180);}
-function showFinalReceipt(){document.getElementById('page3').style.display='none';document.getElementById('page4').style.display='block';let st=defaultStatus;let statusText="",stampText="",stampClass="",msg="";if(st==="Success"){statusText="PAID • APPROVED";stampText="PAID";stampClass="paid";msg="Payment successful";}if(st==="Pending"){statusText="PENDING • WAITING";stampText="PENDING";stampClass="pending";msg="Payment pending";}if(st==="Failed"){statusText="FAILED • DECLINED";stampText="FAILED";stampClass="failed";msg="Payment failed";}let reason=st==="Pending"?pendingReason:st==="Failed"?failedReason:"Thank you for shopping with us.";let d=new Date();let dateStr=d.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'})+", "+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});document.getElementById('resultBox').innerHTML=`<div style="background:#fff;border-radius:22px;padding:18px;color:#111"><div style="text-align:center"><div style="font-size:36px">${st==="Success"?"✅":st==="Pending"?"⏳":"❌"}</div><h2 style="margin:8px 0">${msg}</h2><p style="color:#64748b;font-size:13px">${curPack.price} • ${curPay} ${_curCard} • ${curPack.name}</p><p style="color:#64748b;font-size:12px">${reason}</p></div><div style="margin-top:16px"><div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px"><b style="font-size:15px">Your receipt</b><span style="font-size:12px;color:#64748b">🖨️ Printer</span></div><div class="printerTop"><div class="printerBody"><i style="background:#22c55e"></i><i style="background:#facc15"></i><i style="background:#ef4444"></i><span style="color:#fff;font-size:11px;letter-spacing:2px;margin-left:6px">VOLTRA PRINTER • PRINTING...</span></div><div class="printerSlot"></div></div><div class="receiptWrap2"><div class="receiptPaper2" id="finalPaper"><div style="text-align:center;color:#64748b;font-size:11px">UC VOUCHER</div><h2 style="text-align:center;letter-spacing:3px;margin:5px 0">${storeName}</h2><div style="text-align:center;color:#64748b;font-size:11px">PAYMENT SLIP</div><hr><div class="r-row2"><span>Order ID</span><b>${curOrderId}</b></div><div class="r-row2"><span>UID</span><b>${curGame.fixedUid}</b></div><div class="r-row2"><span>Username</span><b>${verifiedUser||curGame.fixedUser}</b></div><div class="r-row2"><span>Package</span><b>${curPack.name}</b></div><div class="r-row2"><span>Payment</span><b>${curPay} ${_curCard}</b></div><div class="r-row2"><span>Date & Time</span><b>${dateStr}</b></div><hr><div class="r-row2"><span>TOTAL</span><b>${curPack.price} USD</b></div><div class="r-row2"><span>STATUS</span><b>${statusText}</b></div><div style="position:relative;height:110px;margin-top:10px"><div id="finalStamp" class="stamp ${stampClass}">${stampText}</div><div class="barcode2" style="position:absolute;inset:0;top:30px"></div></div><div style="text-align:center;color:#64748b;font-size:11px">Thank you for shopping with us.</div></div></div><div style="display:flex;gap:8px;margin-top:4px"><button onclick="replayReceipt()" style="flex:1;background:#eee;color:#111;box-shadow:none">↻ Print again</button><button onclick="closeFlow()" style="flex:1">Done</button></div></div></div>`;orders.push({game:curGame.name,pack:curPack.name,username:verifiedUser||curGame.fixedUser,uid:curGame.fixedUid,pay:curPay,price:curPack.price,id:curOrderId,status:st});localStorage.setItem('deal_orders',JSON.stringify(orders));renderOrders();setTimeout(()=>{document.getElementById('finalPaper').classList.add('show');},400);setTimeout(()=>{document.getElementById('finalStamp').classList.add('show');},2400);}
-function replayReceipt(){let p=document.getElementById('finalPaper');let s=document.getElementById('finalStamp');p.classList.remove('show');s.classList.remove('show');setTimeout(()=>{p.classList.add('show');},400);setTimeout(()=>{s.classList.add('show');},2400);}
-loadAll();
-</script>
+<div class="overlayPage" id="page1"><div class="pageBox"><div class="detail-topbar"><button onclick="closeFlow()" class="btn-small">← Back</button><b id="p1Title">Game</b></div><div class="steps"><div class="on"></div><div></div><div></div><div></div></div><div class="detail-banner" id="p1Banner"></div><div class="sold-wrap"><div class="sold-title">RECENTLY SOLD</div><div class="sold-scroll" id="soldScroll"></div></div><div class="search-player"><h2>ENTER PLAYER ID</h2><div class="search-row"><input id="usernameInput" placeholder="Enter Player ID"><button onclick="verifyUid()">🔗 VERIFY</button></div><p id="usernameError" style="color:#ff1744;display:none">❌ Wrong ID!</p><p id="usernameOk" style="color:#00ff88;display:none">✅ Connected</p><p id="usernameLabel">Player ID</p></div><div id="verifiedCard" style="display:none;padding:0 16px"></div><div class="packs-wrap"><h2 id="packsTitle">💎 PACKS</h2><div class="pack-grid" id="packGrid"></div></div><div id="afterVerify" style="display:none;padding:0 16px"><div class="trust-box">🛡️ 100% TRUSTED<br>✅ Safe & Secure<br>✅ Fast Delivery<br>✅ Money Back Policy<br>✅ 24/7 Support</div><button class="btn-green" onclick="goToPayment()">Continue - Payment →</button></div></div></div>
+<div class="overlayPage" id="page2"><div class="pageBox" style="padding:16px"><div class="steps"><div class="on"></div><div class="on"></div><div></div><div></div></div><h3>💳 Payment</h3><button onclick="backToPage1()" class="btn-small">← Back</button><div id="p2UserTop"></div><div id="p2Summary"></div><h4>PAYMENT METHOD - 3 Normal + 1 Golden</h4><div id="payMethods"></div><div style="background:#141433;padding:15px;border-radius:14px;border:1.5px solid #facc15;margin-top:10px"><input id="cvcInput" placeholder="CVC / CVV" maxlength="4" inputmode="numeric" style="text-align:center;font-size:20px;letter-spacing:6px"><button class="btn-green" onclick="goToLoading()">💰 PAY NOW → SECURE</button></div></div></div>
+<div class="overlayPage" id="page3"><div class="pageBox" style="padding:22px;text-align:center"><h2>Processing Payment</h2><p id="p3UidLine"></p><div id="p3UserTop"></div><div style="background:#1e293b;height:16px;border-radius:20px;margin:20px 5px 10px;overflow:hidden"><div id="p3Bar" style="height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#2563eb)"></div></div><div style="display:flex;justify-content:space-between"><b id="p3Pct">0%</b><span id="p3Msg">Connecting...</span></div></div></div>
+<div class="overlayPage" id="page4"><div class="pageBox" style="text-align:center;padding:30px 16px;background:#000;position:relative"><div id="confettiBox"></div><div id="resultBox"></div></div></div>
+<div class="confirmModal" id="confirmModal"><div class="confirmBox"><h3>Confirm payment</h3><div id="cfPrice">$19.01</div><div class="c-row"><span>Package</span><b id="cfPack"></b></div><div class="c-row"><span>UID</span><b id="cfUid"></b></div><div class="c-row"><span>Username</span><b id="cfUser"></b></div><div class="c-row"><span>Order ID</span><b id="cfOrder"></b></div><div class="c-row"><span>Pay With</span><b id="cfPay"></b></div><div style="display:flex;gap:9px;margin-top:16px"><button onclick="closeConfirm()" style="flex:1;background:#edf1f7;color:#111">Cancel</button><button onclick="confirmPayNow()" style="flex:1">Pay</button></div></div></div>
+<footer><div class="foot-top"><div class="foot-left"><h2 id="storeNameFoot">FAST DEAL STORE</h2><p><span id="storeDescFoot">FAST DEAL STORE</span> is your recharge store.</p><div class="pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>USDT</span><span>Bitcoin</span></div></div><div class="foot-right"><h4>Contact us</h4><button class="cs-btn">✉️ Customer Service</button></div></div><div class="contact-box"><p>📞 <b>Official Contact:</b> <span id="showContact">Not set yet</span></p><p>📍 <b>Address:</b> <span id="showAddress">Not set yet</span></p><p>💻 <b>Developed By: Binrao</b></p></div><div class="bottom"><span>Terms | Privacy | Cookie</span><span>Copyright © <span id="storeCopyFoot">FAST DEAL STORE</span></span></div></footer>
+<script src="themes.js"></script>
+<script src="games.js"></script>
+<script src="settings.js"></script>
+<script src="app.js"></script>
 </body>
-  </html>
+</html>
