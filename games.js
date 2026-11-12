@@ -1,0 +1,13 @@
+function makeBigPacks(unit){return [{name:"25K "+unit,price:"$300",photo:""},{name:"50K "+unit,price:"$600",photo:""},{name:"75K "+unit,price:"$900",photo:""},{name:"100K "+unit,price:"$1200",photo:""},{name:"125K "+unit,price:"$1500",photo:""},{name:"150K "+unit,price:"$1800",photo:""},{name:"175K "+unit,price:"$2100",photo:""},{name:"200K "+unit,price:"$2500",photo:""}];}
+let defaultGames=[
+{name:"PUBG Mobile UC",cat:"Battle Royale",price:"From $300",badge:"HOT",color:"#FF5E8A",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"PUBG ID",fixedUser:"KALEOZ_122",fixedUid:"3613225095",packs:makeBigPacks("UC")},
+{name:"BGMI UC",cat:"Battle Royale",price:"From $300",badge:"HOT",color:"#FF8A00",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"BGMI ID",fixedUser:"KALEOZ_122",fixedUid:"3613225095",packs:makeBigPacks("UC")},
+{name:"Free Fire Diamonds",cat:"Diamonds",price:"From $300",badge:"HOT",color:"#FF5E8A",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"Free Fire ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds")},
+{name:"Free Fire MAX Diamonds",cat:"Diamonds",price:"From $300",badge:"TRENDING",color:"#EC4899",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"Free Fire MAX ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds")},
+{name:"COD Mobile CP",cat:"Battle Royale",price:"From $300",badge:"TRENDING",color:"#2563EB",icon:"🪖",photo:"",iconPhoto:"",banners:[],userLabel:"COD UID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("CP")},
+{name:"Mobile Legends Diamonds",cat:"Diamonds",price:"From $300",badge:"TRENDING",color:"#06B6D4",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"MLBB ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds")},
+{name:"TikTok Coins",cat:"Coins",price:"From $300",badge:"HOT",color:"#EC4899",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"TikTok Username",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Coins")},
+{name:"Valorant Points",cat:"Coins",price:"From $300",badge:"TRENDING",color:"#059669",icon:"🔴",photo:"",iconPhoto:"",banners:[],userLabel:"Riot ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("VP")}
+];
+let games=JSON.parse(localStorage.getItem('deal_games')||'null')||defaultGames;
+games=games.map(g=>{let pk=g.packs;if(!Array.isArray(pk))pk=makeBigPacks("UC");pk=pk.map(p=>({name:p.name||"Pack",price:p.price||"$300",photo:p.photo||""}));let banners=g.banners||(g.photo?[g.photo]:[]);return {...g,photo:g.photo||"",iconPhoto:g.iconPhoto||"",banners:banners,userLabel:g.userLabel||"Player ID",fixedUser:g.fixedUser||"BINRAO",fixedUid:g.fixedUid||"5308075875",packs:pk};});
