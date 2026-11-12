@@ -1,0 +1,36 @@
+/* ===== PRINTER REAL - WHITE ===== */
+.printerTop{background:#1e293b;border-radius:16px 16px 0 0;padding:14px 14px 0;text-align:center}
+.printerBody{background:#0f172a;border-radius:12px;padding:10px;display:flex;justify-content:center;gap:6px;align-items:center}
+.printerBody i{width:8px;height:8px;border-radius:50%;display:block}
+.printerSlot{background:#000;height:14px;margin:10px 0 0;border-radius:10px 10px 0 0}
+.receiptWrap2{padding:0 14px 14px}
+.receiptPaper2{background:#ffffff!important;color:#111!important;padding:18px 15px;transform:translateY(-110%);transition:transform 1.8s ease;position:relative;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.3);clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),95% 100%,90% calc(100% - 8px),85% 100%,80% calc(100% - 8px),75% 100%,70% calc(100% - 8px),65% 100%,60% calc(100% - 8px),55% 100%,50% calc(100% - 8px),45% 100%,40% calc(100% - 8px),35% 100%,30% calc(100% - 8px),25% 100%,20% calc(100% - 8px),15% 100%,10% calc(100% - 8px),5% 100%,0 calc(100% - 8px))}
+.receiptPaper2.show{transform:translateY(0)}
+.receiptPaper2 .store-mini{font-size:11px;letter-spacing:3px;color:#888;text-align:center;font-weight:900}
+.receiptPaper2 .store-big{font-size:16px;letter-spacing:2px;text-align:center;margin:4px 0;font-weight:900;color:#111}
+.r-row2{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #e2e8f0;font-size:14px;color:#111}
+.stamp{position:absolute;right:20px;top:0;width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;transform:rotate(-18deg) scale(2.8);opacity:0;z-index:5;background:rgba(255,255,255,.7)}
+.stamp.show{animation:stampThap .6s ease forwards}
+@keyframes stampThap{0%{transform:rotate(-18deg) scale(2.8);opacity:0}60%{transform:rotate(-18deg) scale(.9);opacity:1}100%{transform:rotate(-18deg) scale(1);opacity:1}}
+.stamp.paid{border:4px double #087443;color:#087443}.stamp.pending{border:4px double #8a5b00;color:#8a5b00}.stamp.failed{border:4px double #b4232a;color:#b4232a}
+.barcode2{height:43px;margin-top:10px;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px)}
+
+/* ===== 3 NORMAL + 1 GOLDEN CARD ===== */
+.pay-voltra{background:#fff;color:#111;border-radius:16px;padding:6px;margin:10px 0;overflow:hidden}
+.pay-row{display:flex;align-items:center;gap:12px;padding:14px 10px;border-bottom:1px solid #eef2f7;cursor:pointer;background:#fff}
+.pay-row.golden{background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700)!important;color:#000!important;border:2px solid #FFD700!important;box-shadow:0 0 18px rgba(255,215,0,.7);animation:goldShine 1.5s ease-in-out infinite}
+@keyframes goldShine{0%,100%{box-shadow:0 0 10px #FFD700}50%{box-shadow:0 0 28px #FFD700}}
+.pay-row.sel{background:#f0f7ff}
+.pay-row.golden.sel{background:linear-gradient(135deg,#FFD700,#FFA500)!important}
+.pay-logo{width:44px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pay-radio{width:22px;height:22px;border-radius:50%;border:2px solid #cbd5e1;margin-left:auto;display:flex;align-items:center;justify-content:center}
+.pay-row.sel .pay-radio{border-color:#2563eb}
+.pay-row.sel .pay-radio:after{content:'';width:12px;height:12px;border-radius:50%;background:#2563eb;display:block}
+
+/* ===== SUCCESS CONFETTI - NEW YEAR ===== */
+#confettiBox{position:fixed;inset:0;pointer-events:none;z-index:3000;overflow:hidden;display:none}
+#confettiBox.show{display:block}
+.confetti{position:absolute;top:-20px;width:10px;height:16px;animation:confFall 2.8s linear forwards}
+@keyframes confFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.firework{position:absolute;width:6px;height:6px;border-radius:50%;animation:fireBlast 1s ease-out forwards}
+@keyframes fireBlast{0%{transform:scale(0);opacity:1}100%{transform:scale(22);opacity:0}}
