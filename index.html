@@ -4,52 +4,443 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FAST DEAL STORE</title>
-<meta name="theme-color" content="#0a050a">
+<meta name="theme-color" content="#0a1a3a">
+<!-- PWA - CHROME SE INSTALL KE LIYE -->
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FAST DEAL STORE">
+<style>
+:root{--bg:#05070a;--accent:#93C5FD;--banner:linear-gradient(135deg,#0a1a3a,#2563eb,#0a1a3a);--btn-bg:linear-gradient(135deg,#2563eb,#60a5fa);--btn-text:#fff;--glow:0 10px 40px rgba(37,99,235,.5)}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:var(--bg);background-attachment:fixed;color:#fff;min-height:100vh;overflow-x:hidden;padding-bottom:70px}
+#banner,.card-game,button{box-shadow:var(--glow)}
+.shop-cats,.search,.filters,.sold-wrap{display:none!important}
+body.theme-layer::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(600px 300px at 50% 20%, rgba(59,130,246,.22) 0%, transparent 60%),repeating-linear-gradient(115deg, transparent 0px, transparent 45px, rgba(255,255,255,.05) 45px, rgba(255,255,255,.08) 46px, transparent 47px, transparent 90px)}
+body.theme-layer header,body.theme-layer main,body.theme-layer footer{position:relative;z-index:1}
+body.theme-solar::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(1.5px 1.5px at 8% 18%, #fff 50%, transparent 51%),radial-gradient(1px 1px at 22% 35%, #fff 50%, transparent 51%),radial-gradient(2px 2px at 35% 12%, #fff 50%, transparent 51%),radial-gradient(600px 300px at 50% 20%, var(--accent) 0%, transparent 60%)}
+body.theme-solar header,body.theme-solar main,body.theme-solar footer{position:relative;z-index:1}
+.solar-section{display:none;margin:18px 0 6px}
+body.theme-solar .solar-section{display:block}
+.solar-head{font-size:17px;font-weight:900;margin-bottom:10px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.solar-scroll{height:640px;overflow-y:auto;scroll-snap-type:y mandatory;border-radius:22px;border:1px solid rgba(255,255,255,.2);background:#020204;scrollbar-width:none}
+.solar-page{height:640px;scroll-snap-align:start;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding-top:28px;text-align:center}
+.solar-page small{font-size:9px;letter-spacing:3px;color:#888;z-index:3}
+.solar-page h1{font-size:28px;letter-spacing:4px;font-weight:300;z-index:3;margin-top:6px}
+.solar-page .desc{font-size:11px;line-height:1.6;color:#aaa;z-index:3;margin-top:8px;padding:0 20px}
+.solar-page .read{font-size:10px;letter-spacing:2px;border:1px solid rgba(255,255,255,.4);padding:8px 18px;border-radius:20px;margin-top:10px;z-index:3;cursor:pointer;background:#fff;color:#000;font-weight:900}
+.solar-packs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:10px 14px;z-index:3;margin-top:8px;max-width:320px}
+.solar-pack{width:78px;height:100px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.4);cursor:pointer;background:#222}
+.solar-pack img{width:100%;height:100%;object-fit:cover;display:block}
+.solar-planet{position:absolute;left:50%;bottom:-200px;transform:translateX(-50%);width:440px;height:440px;border-radius:50%;overflow:hidden;z-index:1}
+.solar-planet img{width:100%;height:100%;object-fit:cover;display:block}
+.solar-glow{position:absolute;left:50%;bottom:-220px;transform:translateX(-50%);width:480px;height:480px;border-radius:50%;filter:blur(40px);opacity:.45;z-index:0;background:var(--accent)}
+.solar-hint{position:absolute;bottom:12px;z-index:4;font-size:10px;color:#888}
+body.shop-layout{background:#f6f6f8;color:#111}
+body.shop-layout header{background:#fff;color:#111;border-bottom:0}
+body.shop-layout #storeTitle h2{background:none;-webkit-text-fill-color:#111;color:#111}
+body.shop-layout #storeTitle small{color:#888}
+body.shop-layout main{background:#f6f6f8}
+body.shop-layout h3.sec{background:none;-webkit-text-fill-color:#111;color:#111}
+body.shop-layout .card-game{background:#fff;color:#111;border:0;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+body.shop-layout .card-game small{color:#888}
+body.shop-layout footer{background:#fff;color:#111}
+body.shop-layout .shop-nav{display:flex}
+.shop-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;padding:10px 0 14px;justify-content:space-around;z-index:90;color:#111;font-size:11px;text-align:center}
+.shop-nav b{display:block;font-size:16px}
+.shop-nav .on{color:var(--accent)}
+header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.06);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.15);position:sticky;top:0;z-index:50}
+#logo{width:50px;height:50px;border-radius:16px;background:var(--banner);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;font-weight:900;box-shadow:var(--glow);flex-shrink:0}
+#logo img{width:100%;height:100%;object-fit:cover;display:block}
+#storeTitle h2{background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:23px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#storeTitle small{color:#d1c7d1}
+.live{background:rgba(0,255,150,.15);color:#00ffa3;border:1px solid rgba(0,255,150,.4);padding:5px 11px;border-radius:20px;font-size:11px;font-weight:bold}
+body.shop-layout .live{display:none}
+.installBtn{background:#fff;color:#000;padding:8px 12px;border-radius:20px;font-size:12px;font-weight:900;box-shadow:none;display:none}
+.installBtn.show{display:block}
+.installBar{display:none;background:#0a1a3a;color:#fff;padding:10px 14px;margin:10px 16px;border-radius:14px;align-items:center;justify-content:space-between;gap:10px}
+.installBar.show{display:flex}
+.installBar button{background:#fff;color:#000;padding:8px 14px;box-shadow:none}
+#banner{height:210px;margin:14px 16px;border-radius:24px;background:var(--banner);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;box-shadow:var(--glow);border:1px solid rgba(255,255,255,.35);position:relative}
+#banner .main-banner-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+#banner .main-banner-img.show{opacity:1}
+#banner .banner-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.55));z-index:1}
+#banner span{color:#fff;font-weight:900;font-size:21px;text-shadow:0 4px 20px rgba(0,0,0,.5);position:relative;z-index:2;padding:0 12px}
+#banner span i{font-family:cursive;font-weight:400;color:#fff;font-size:30px}
+.banner-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:3}
+.banner-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);display:block}
+.banner-dots i.on{background:#fff;width:22px;border-radius:10px}
+main{padding:0 16px 16px}
+h3.sec{margin:16px 0 12px;font-size:17px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card-game{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:20px;overflow:hidden;padding-bottom:10px;cursor:pointer}
+.card-game .top{height:105px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;overflow:hidden;position:relative}
+.card-game .top img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:block}
+.card-game .top .overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
+.card-game .top .emoji{font-size:32px;position:relative;z-index:2}
+.card-game .inner{padding:10px 12px}
+.badge{display:inline-block;background:var(--btn-bg);color:#fff;font-size:10px;padding:3px 9px;border-radius:10px;font-weight:bold}
+.card-game b{font-size:13px;display:block;margin:6px 0 2px}
+.card-game small{color:#d1c7d1;font-size:11px}
+.card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);padding:18px;border-radius:22px;margin:16px 0}
+body.shop-layout .card{background:#fff;color:#111}
+.card h3{margin-bottom:8px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+label{font-size:13px;color:var(--accent)}
+input,textarea,select{width:100%;padding:11px;margin:6px 0 10px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(0,0,0,.35);color:#fff;outline:none}
+body.shop-layout input,body.shop-layout textarea{background:#f1f1f1;color:#111;border:0}
+button{padding:10px 16px;border:0;border-radius:12px;background:var(--btn-bg);color:var(--btn-text);font-weight:bold;cursor:pointer;box-shadow:var(--glow)}
+.btn-green{background:var(--btn-bg);color:#fff;width:100%;padding:12px}
+.btn-red{background:linear-gradient(135deg,#ff1744,#ff5e3a);color:#fff;padding:6px 10px;font-size:12px;box-shadow:none}
+.btn-small{background:#333;color:#fff;padding:6px 10px;font-size:11px;box-shadow:none}
+.btn-save{background:#fff;color:#000;width:100%;padding:11px;box-shadow:none;margin-top:6px}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,.3);padding:10px 12px;border-radius:12px;margin:6px 0;border:1px solid rgba(255,255,255,.1)}
+.toggle-row input{width:20px;height:20px;margin:0}
+footer{background:rgba(0,0,0,.5);padding:28px 16px 16px;margin-top:10px;border-top:1px solid rgba(255,255,255,.15)}
+.foot-top{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot-left h2{font-size:26px;margin-bottom:8px;background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.foot-left p{color:#d1c7d1;font-size:14px;line-height:1.6}
+.foot-right h4{background:var(--banner);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.foot-right p{color:#d1c7d1;font-size:13px}
+.cs-btn{margin-top:10px;background:var(--btn-bg);color:#fff;padding:10px 18px;border-radius:20px}
+.pay{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.pay span{background:#fff;color:#000;padding:7px 10px;border-radius:8px;font-size:12px;font-weight:bold}
+.contact-box{margin-top:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);padding:14px;border-radius:16px}
+.contact-box p{color:#eee;font-size:14px;line-height:1.8}
+.bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:20px;padding-top:16px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#999;font-size:12px}
+.game-edit{background:rgba(0,0,0,.35);padding:12px;border-radius:14px;margin:10px 0;border:1px solid rgba(255,255,255,.15)}
+body.shop-layout .game-edit{background:#f1f1f1;color:#111}
+.game-edit b{color:var(--accent)}
+.game-edit .preview{width:100%;height:105px;border-radius:10px;overflow:hidden;background:#222;display:flex;align-items:center;justify-content:center;margin:6px 0}
+.game-edit .preview img{width:100%;height:100%;object-fit:cover;display:block}
+.pack-edit{background:#1a0a2e;border:2px solid #A855F7;padding:12px;border-radius:14px;margin:10px 0}
+.pack-edit .p-thumb{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#222;display:flex;align-items:center;justify-content:center;margin:6px 0;border:1px dashed #fff}
+.pack-edit .p-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.banner-item{position:relative;border-radius:12px;overflow:hidden;height:90px;background:#222;border:1px solid rgba(255,255,255,.2)}
+.banner-item img{width:100%;height:100%;object-fit:cover;display:block}
+.banner-item button{position:absolute;top:6px;right:6px;background:#ff1744;color:#fff;padding:5px 9px;font-size:11px;box-shadow:none}
+.row2{display:flex;gap:8px}.row2 input{flex:1}
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.theme-opt{padding:14px;border-radius:16px;border:2px solid rgba(255,255,255,.25);cursor:pointer;text-align:center;font-size:12px;font-weight:bold;color:#fff;text-shadow:0 1px 6px #000}
+.theme-opt.selected{border-color:#fff;transform:scale(1.04)}
+.overlayPage{display:none;position:fixed;inset:0;background:#05070a;z-index:1000;overflow-y:auto}
+.pageBox{max-width:100%;background:var(--bg);background-attachment:fixed;min-height:100vh;padding-bottom:30px}
+.steps{display:flex;gap:6px;margin:0 16px 14px;padding-top:14px}
+.steps div{flex:1;height:6px;border-radius:10px;background:rgba(255,255,255,.15)}
+.steps div.on{background:var(--btn-bg)}
+.pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.pack{padding:0;border-radius:16px;border:2px solid rgba(255,255,255,.2);background:#222;cursor:pointer;text-align:center;position:relative;overflow:hidden}
+.pack .pk-img{width:100%;height:190px;overflow:hidden;background:#222;display:flex;align-items:center;justify-content:center;position:relative}
+.pack .pk-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pack .pk-check{position:absolute;top:8px;right:8px;background:var(--accent);color:#000;width:24px;height:24px;border-radius:50%;display:none;align-items:center;justify-content:center;font-size:13px;font-weight:900;z-index:3}
+.pack.sel{border-color:var(--accent);animation:packThemeGlow 1.1s ease-in-out infinite}
+.pack.sel::before{content:'';position:absolute;inset:-45%;background:conic-gradient(from 0deg, transparent 0deg, transparent 70deg, var(--accent) 90deg, #fff 110deg, var(--accent) 130deg, transparent 150deg, transparent 360deg);animation:roundRotate 1.2s linear infinite;z-index:0;pointer-events:none}
+.pack.sel::after{content:'';position:absolute;inset:2px;background:rgba(0,0,0,.15);border-radius:14px;z-index:0;pointer-events:none}
+.pack.sel > *{position:relative;z-index:1}
+.pack.sel .pk-check{display:flex}
+@keyframes roundRotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes packThemeGlow{0%,100%{box-shadow:0 0 0 2px var(--accent),0 0 12px var(--accent)}50%{box-shadow:0 0 0 3px var(--accent),0 0 30px var(--accent),0 0 50px var(--accent)}}
+.pack-buy{display:none!important}
+.pay-voltra{background:#fff;color:#111;border-radius:16px;padding:6px;margin:10px 0;overflow:hidden}
+.pay-row{display:flex;align-items:center;gap:12px;padding:14px 10px;border-bottom:1px solid #eef2f7;cursor:pointer}
+.pay-row:last-child{border-bottom:0}
+.pay-row.sel{background:#f0f7ff}
+.pay-row.golden{background:linear-gradient(135deg,#fff7cc,#ffd700,#ffcc00,#fff3a0);border:2px solid #d4af37}
+.pay-row.golden.sel{background:linear-gradient(135deg,#ffe97a,#ffd700,#ffcc00);box-shadow:0 0 18px rgba(255,215,0,.8)}
+.pay-logo{width:44px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900}
+.pay-logo.apple{font-size:22px}
+.pay-logo.visa{color:#1a1f71;font-style:italic;font-size:17px}
+.mc-c{width:32px;height:20px;position:relative}
+.mc-c i{position:absolute;width:20px;height:20px;border-radius:50%;top:0}
+.mc-c i:first-child{background:#eb001b;left:0}
+.mc-c i:last-child{background:#f79e1b;opacity:.9;left:12px}
+.pay-radio{width:22px;height:22px;border-radius:50%;border:2px solid #cbd5e1;margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.pay-row.sel .pay-radio{border-color:#2563eb}
+.pay-row.sel .pay-radio:after{content:'';width:12px;height:12px;border-radius:50%;background:#2563eb;display:block}
+.confirmModal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+.confirmModal.show{display:flex}
+.confirmBox{background:#fff;color:#111;border-radius:22px;padding:22px;width:100%;max-width:340px;text-align:center}
+.c-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e2e8f0;font-size:14px}
+.c-row span{color:#64748b}
+.printerTop{background:#f8fafc;border-radius:16px 16px 0 0;padding:14px 14px 0;text-align:center;border:1px solid #e2e8f0;border-bottom:0}
+.printerTop:before{content:'';display:block;width:60px;height:6px;background:#cbd5e1;border-radius:10px;margin:0 auto 10px}
+.printerBody{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px;display:flex;justify-content:center;gap:6px;align-items:center}
+.printerBody i{width:8px;height:8px;border-radius:50%;display:block}
+.printerSlot{background:#0f172a;height:14px;margin:10px 0 0;border-radius:10px 10px 0 0;position:relative;z-index:5}
+.receiptWrap2{background:#f1f5f9;overflow:hidden;padding:0 14px 14px}
+.receiptPaper2{background:#fff;color:#111;padding:18px 15px;transform:translateY(-110%);transition:transform 1.8s ease;position:relative;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.15);overflow:hidden}
+.receiptPaper2.show{transform:translateY(0)}
+.r-row2{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #e2e8f0;font-size:14px;color:#111}
+.r-row2 span{color:#64748b;font-size:13px}
+/* ===== PROFESSIONAL ORIGINAL BLUE STAMP ===== */
+.stamp{position:absolute;left:50%;top:50%;width:148px;height:148px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transform:translate(-50%,-50%) rotate(-15deg) scale(2.6);opacity:0;z-index:5;pointer-events:none;text-align:center;background:rgba(255,255,255,.15);border:3px solid #1D4ED8;outline:2px solid #1D4ED8;outline-offset:5px;box-shadow:inset 0 0 0 2px rgba(29,78,216,.35),0 0 0 1px rgba(255,255,255,.6);color:#1D4ED8}
+.stamp::before{content:'★ ★ ★';font-size:9px;letter-spacing:3px;color:#1D4ED8;opacity:.9}
+.stamp::after{content:'FAST DEAL STORE';font-size:8px;letter-spacing:1px;font-weight:800;color:#1D4ED8;opacity:.9;border-top:1px solid #1D4ED8;padding-top:3px;margin-top:2px}
+.stamp b{font-size:20px;letter-spacing:1px;font-weight:900;line-height:1;color:#1D4ED8;text-shadow:0 0 1px rgba(29,78,216,.3)}
+.stamp small{font-size:8px;letter-spacing:2px;font-weight:700;color:#1D4ED8}
+.stamp.show{animation:stampThapPro .55s cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes stampThapPro{0%{transform:translate(-50%,-50%) rotate(-15deg) scale(2.6);opacity:0}55%{transform:translate(-50%,-50%) rotate(-15deg) scale(.92);opacity:.95}70%{transform:translate(-50%,-50%) rotate(-15deg) scale(1.05);opacity:1}100%{transform:translate(-50%,-50%) rotate(-15deg) scale(1);opacity:.92}}
+.stamp.paid{border-color:#1D4ED8;outline-color:#1D4ED8;color:#1D4ED8}
+.stamp.pending{border-color:#1D4ED8;outline-color:#1D4ED8;color:#1D4ED8}
+.stamp.failed{border-color:#B4232A;outline-color:#B4232A;color:#B4232A;background:rgba(255,255,255,.15)}
+.stamp.failed::before,.stamp.failed::after,.stamp.failed b,.stamp.failed small{color:#B4232A;border-color:#B4232A}
+.barcode2{height:43px;margin-top:10px;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px)}
+.status-btn{flex:1;padding:12px;border:3px solid transparent;border-radius:12px;cursor:pointer;font-weight:bold}
+.status-btn.on{border-color:#fff;transform:scale(1.03)}
+.verify-card{background:#0f1e2e;border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin:12px 0;border:1px solid rgba(255,255,255,.08)}
+.verify-card .v-left b{color:#fff;font-size:16px}
+.verify-card .v-left p{color:#aab8c5;font-size:13px;margin-top:6px}
+.verify-card .v-arrow{background:none;color:#fff;font-size:22px;box-shadow:none;padding:4px 2px;cursor:pointer}
+.trust-box{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.3);border-radius:16px;padding:14px;margin:14px 16px;font-size:13px;line-height:2;color:#d1fae5}
+.detail-topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(0,0,0,.5);position:sticky;top:0;z-index:10}
+.detail-banner{position:relative;height:210px;overflow:hidden;background:var(--banner)}
+.detail-banner img{width:100%;height:100%;object-fit:cover;display:block}
+.detail-banner .db-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.35))}
+.detail-banner .db-text{position:absolute;left:14px;bottom:14px;right:14px}
+.detail-banner .db-text h1{font-size:28px;font-weight:900;text-transform:uppercase;text-shadow:0 4px 20px #000;white-space:normal;line-height:1.1}
+.detail-banner .db-text p{font-size:11px;letter-spacing:1px;color:#ddd;margin-top:6px;font-weight:bold}
+.voucher-box{background:rgba(255,215,0,.12);border:1px solid rgba(255,215,0,.5);border-radius:16px;padding:14px;margin:14px 16px 0;font-size:13px;line-height:1.9;color:#fff;white-space:pre-line}
+.search-player{padding:14px 16px 0}
+.search-player h2{font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.search-player h2:before{content:'';width:4px;height:20px;background:var(--btn-bg);border-radius:10px;display:block}
+.search-row{display:flex;gap:8px}
+.search-row input{flex:1;background:#fff!important;color:#000!important;border:2px solid #fff;border-radius:10px;padding:13px;font-size:14px;font-weight:bold;margin:0}
+.search-row button{white-space:nowrap;background:var(--btn-bg);padding:12px 14px;font-size:13px;border-radius:10px}
+.packs-wrap{padding:14px 16px 0}
+.packs-wrap h2{font-size:18px;font-weight:900;display:flex;align-items:center;gap:8px;margin-bottom:10px;white-space:normal;line-height:1.2}
+.packs-wrap h2:before{content:'';width:4px;height:20px;background:var(--btn-bg);border-radius:10px;display:block;flex-shrink:0}
+.confetti{position:fixed;top:-10px;z-index:9999;pointer-events:none;animation:confFall linear forwards}
+@keyframes confFall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+.order-row{background:#fff;color:#111;padding:12px;border-radius:12px;margin:8px 0}
+</style>
 </head>
 <body>
-<header>
-  <div style="display:flex;gap:10px;align-items:center">
-    <div id="logo" onclick="secretClick()"><span>FD</span></div>
-    <div id="storeTitle" onclick="secretClick()"><h2 id="storeNameTop">FAST DEAL STORE</h2><small id="storeTaglineTop">Trending Topups • Fast • Secure • Instant</small></div>
-  </div>
-  <div style="display:flex;gap:6px;align-items:center"><button id="installBtn" class="installBtn" onclick="installApp()">⬇️ Install</button><span class="live">● LIVE</span></div>
-</header>
+<header><div style="display:flex;gap:10px;align-items:center;min-width:0"><div id="logo" onclick="secretClick()"><span>FD</span></div><div id="storeTitle" onclick="secretClick()"><h2 id="storeNameTop">FAST DEAL STORE</h2><small id="storeTaglineTop">Trending Topups • Fast • Secure • Instant</small></div></div><div style="display:flex;gap:6px;align-items:center"><button id="installBtn" class="installBtn" onclick="installApp()">⬇️ Install</button><span class="live">● LIVE</span></div></header>
+<div class="installBar" id="installBar"><span>📲 <b>App Install Karo</b> - Chrome se Home Screen par lagao</span><button onclick="installApp()">Install</button></div>
 <div id="banner"><span id="bannerText">🔥 Trending Topups<br>Fast • Secure • Instant</span><div class="banner-dots" id="bannerDots"></div></div>
-<div class="search">🔍 Search... PUBG, BGMI, Free Fire...</div>
-<div class="filters" id="filterBar"></div>
 <main>
 <h3 class="sec">🔥 Trending Now</h3><div class="grid" id="trendingGrid"></div>
+<div class="solar-section"><div class="solar-head">🪐 SOLAR EXPLORER - Scroll Karo, Agli Game Aayegi</div><div class="solar-scroll" id="solarScroll"></div></div>
 <h3 class="sec">🎮 All Games</h3><div class="grid" id="allGrid"></div>
 </main>
-
-<!-- SETTINGS -->
+<div class="shop-nav"><div class="on"><b>🏠</b>Home</div><div><b>▦</b>Categories</div><div><b>♡</b>Favorites</div><div><b>👤</b>Profile</div></div>
 <div class="overlayPage" id="settingsPage"><div class="pageBox" style="padding:16px">
-<div class="detail-topbar"><button onclick="closeSettingsPage()" class="btn-small">← Back</button><b>⚙️ Store Settings</b><button onclick="closeSettingsPage()" style="background:#ff1744;padding:6px 12px;box-shadow:none">✖ Close</button></div>
-<div class="card"><b>🏪 STORE NAME</b><input id="storeNameInput" value="FAST DEAL STORE"><input id="storeTaglineInput" value="Trending Topups • Fast • Secure • Instant"><button onclick="applyStoreName()" class="btn-save">✅ SAVE STORE NAME</button></div>
-<div class="card" style="border:2px solid #00ff88"><b>🖼️ MAIN BANNERS</b><input type="file" id="bannerPhotosInput" accept="image/*" multiple onchange="uploadBannerPhotos(event)"><div id="bannerPhotosList" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px"></div><p id="bannerCountText">0 Banners</p><button onclick="saveMainBanners()" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE BANNERS</button><button onclick="clearAllBanners()" style="background:#ff1744;width:100%">🗑️ Delete All</button></div>
-<div class="card" style="border:2px solid #ffcc00"><b>🎯 NEXT ORDER RESULT?</b><div style="display:flex;gap:8px;margin-top:8px"><button id="defSuccess" class="status-btn" onclick="setDefaultStatus('Success')" style="background:#00c853;color:#fff">✅ SUCCESS</button><button id="defPending" class="status-btn" onclick="setDefaultStatus('Pending')" style="background:#ffcc00;color:#000">⏳ PENDING</button><button id="defFailed" class="status-btn" onclick="setDefaultStatus('Failed')" style="background:#ff1744;color:#fff">❌ FAILED</button></div><p id="defaultStatusText">Current: ⏳ Pending</p><button onclick="saveOrderSettings()" class="btn-save" style="background:#ffcc00;color:#000">✅ SAVE ORDER</button></div>
-<div class="card"><b>📝 REASON</b><label>⏳ Pending Reason</label><textarea id="pendingReason"></textarea><label>❌ Failed Reason</label><textarea id="failedReason"></textarea><button onclick="saveReasonSettings()" class="btn-save">✅ SAVE REASONS</button></div>
-<div class="card"><b>📦 ORDERS</b><div id="ordersList"></div><button onclick="clearOrders()" style="background:#333">🗑️ Clear Orders</button></div>
-<div class="card"><h4>✨ Themes - 20</h4><div class="theme-grid" id="themeGrid"></div><button onclick="saveTheme()" class="btn-save">✅ SAVE THEME</button></div>
-<div class="card"><label>Icon / Logo Photo</label><input type="file" id="logoInput" accept="image/*"><button onclick="saveLogo()" class="btn-save">✅ SAVE LOGO</button><label>Official Contact</label><input id="contactInput"><label>Address</label><textarea id="addressInput"></textarea><button onclick="saveContact()" class="btn-save">✅ SAVE CONTACT</button></div>
-<div class="card"><h4>Payment ON / OFF</h4><div class="toggle-row"><span>💳 Card</span><input type="checkbox" id="payCard" checked></div><div class="toggle-row"><span>🍎 Apple Pay</span><input type="checkbox" id="payApple" checked></div><div class="toggle-row"><span>🪙 USDT</span><input type="checkbox" id="payUsdt" checked></div><div class="toggle-row"><span>₿ Bitcoin</span><input type="checkbox" id="payBtc" checked></div><button onclick="savePaymentSettings()" class="btn-save" style="background:#00c853;color:#fff">✅ SAVE PAYMENT</button></div>
-<div class="card"><h4>🔘 Filters</h4><input id="filterInput" value="All, Trending, Battle Royale, Diamonds, Coins"><button onclick="saveFilterSettings()" class="btn-save">✅ SAVE FILTERS</button></div>
-<div class="card"><h4>🎮 Games Control</h4><div style="background:rgba(0,0,0,.4);padding:12px;border-radius:14px;border:2px dashed var(--accent)"><b>➕ Add New Game</b><input id="newName" placeholder="New Game Name"><div class="row2"><input id="newCat" placeholder="Category"><input id="newPrice" placeholder="Price"></div><div class="row2"><input id="newBadge" placeholder="Badge"><input id="newIcon" placeholder="Emoji"></div><input id="newUserLabel" placeholder="Username Field"><div class="row2"><input id="newFixedUser" placeholder="Fixed Username"><input id="newFixedUid" placeholder="Fixed UID"></div><button class="btn-green" onclick="addGame()">➕ ADD GAME</button></div><div id="gamesEditor"></div></div>
-<div class="card"><h4>💾 Backup</h4><button onclick="saveAll()" style="width:100%">💾 SAVE ALL</button><div style="display:flex;gap:8px;margin-top:8px"><button onclick="exportBackup()" style="flex:1;background:#333">📋 COPY</button><button onclick="importBackup()" style="flex:1;background:#333">📥 PASTE</button></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><h3>⚙️ Store Settings</h3><button onclick="closeSettings()" style="background:#ff1744;color:#fff;padding:8px 14px;box-shadow:none">✕ CLOSE</button></div>
+<div class="card" id="settingsCard">
+<div style="background:linear-gradient(135deg,#FF5E8A,#A855F7);padding:14px;border-radius:14px;margin:12px 0"><b style="color:#fff">🏪 STORE NAME</b><label style="color:#fff">Store Name</label><input type="text" id="storeNameInput" value="FAST DEAL STORE"><label style="color:#fff">Tagline</label><input type="text" id="storeTaglineInput" value="Trending Topups • Fast • Secure • Instant"><button onclick="applyStoreName()" class="btn-save">✅ SAVE STORE NAME</button></div>
+<div style="background:#0a1a3a;padding:14px;border-radius:14px;margin:12px 0"><b style="color:#fff">📲 CHROME SE INSTALL</b><p style="color:#cbd5e1;font-size:12px;margin:6px 0">Chrome > 3 Dots > Install App / Add to Home Screen<br>Ya upar Install button dabao</p><button onclick="installApp()" class="btn-save" style="background:#fff;color:#000">📲 INSTALL APP</button><button onclick="showInstallHelp()" style="background:#333;color:#fff;box-shadow:none;width:100%;margin-top:6px">❓ Install Kaise Karein?</button></div>
+<div style="background:linear-gradient(135deg,#FF5E8A,#A855F7);padding:14px;border-radius:14px;margin:12px 0"><h3 style="color:#fff;margin:0">✏️ GAME PAGE LIKHAI - APNI MARZI KA LIKHO</h3></div>
+<div style="background:#111;padding:14px;border-radius:14px;border:2px solid #00ff88;margin:10px 0"><b style="color:#fff">1️⃣ UPAR WALA BANNER TITLE</b><input type="text" id="customBannerTitle" placeholder="Upar wala bada title likho"><b style="color:#fff">2️⃣ BEECH WALA BOX</b><textarea id="customVoucherText" rows="4" placeholder="Beech wala box - jo likhna hai likho"></textarea><b style="color:#fff">3️⃣ NEECHE WALA PACKS TITLE</b><input type="text" id="customPacksTitle" placeholder="Neeche wala packs title likho"><button onclick="saveCustomTexts()" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE YE LIKHAI</button><button onclick="resetCustomTexts()" style="background:#333;color:#fff;box-shadow:none;width:100%;margin-top:6px">↩️ Default Wapas Karo</button></div>
+<div style="background:#000;padding:14px;border-radius:14px;border:2px solid #00ff88;margin:12px 0"><b style="color:#fff">🖼️ MAIN PAGE BANNERS - FIX</b><input type="file" id="bannerPhotosInput" accept="image/*" multiple onchange="uploadBannerPhotos(event)"><div id="bannerPhotosList" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px"></div><p id="bannerCountText" style="color:#00ff88;font-size:12px;font-weight:bold;margin-top:8px">0 Banners</p><button onclick="saveMainBanners()" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE MAIN BANNERS</button><button onclick="clearAllBanners()" style="background:#ff1744;color:#fff;box-shadow:none;width:100%;margin-top:6px">🗑️ Delete All Banners</button></div>
+<div style="background:#ffcc00;color:#000;padding:14px;border-radius:14px;margin:12px 0"><h3 style="color:#000;margin:0">📦 ORDERS</h3></div>
+<div style="background:#000;padding:12px;border-radius:14px;border:2px solid #ffcc00;margin:10px 0"><b style="color:#fff">🎯 NEXT ORDER RESULT?</b><div style="display:flex;gap:8px;margin-top:8px"><button id="defSuccess" class="status-btn" onclick="setDefaultStatus('Success')" style="background:#00c853;color:#fff">✅ SUCCESS</button><button id="defPending" class="status-btn" onclick="setDefaultStatus('Pending')" style="background:#ffcc00;color:#000">⏳ PENDING</button><button id="defFailed" class="status-btn" onclick="setDefaultStatus('Failed')" style="background:#ff1744;color:#fff">❌ FAILED</button></div><p id="defaultStatusText" style="color:#ffcc00;font-weight:bold;margin-top:8px">Current: ⏳ Pending</p><button onclick="saveOrderSettings()" class="btn-save" style="background:#ffcc00;color:#000">✅ SAVE ORDER SETTINGS</button></div>
+<div style="background:#111;padding:12px;border-radius:14px;border:2px solid #fff;margin:10px 0"><b style="color:#fff">📝 PENDING / FAILED REASON</b><label>⏳ Pending Reason</label><textarea id="pendingReason"></textarea><label>❌ Failed Reason</label><textarea id="failedReason"></textarea><button onclick="saveReasonSettings()" class="btn-save">✅ SAVE REASONS</button></div>
+<div id="ordersList"></div><button onclick="clearOrders()" style="background:#333;color:#fff;box-shadow:none;margin-top:6px">🗑️ Clear All Orders</button>
+<h4 style="margin:16px 0 6px">✨ Premium Themes - 20</h4><div class="theme-grid" id="themeGrid"></div><button onclick="saveTheme()" class="btn-save">✅ SAVE THEME</button>
+<label>Icon / Logo Photo</label><input type="file" id="logoInput" accept="image/*"><button onclick="saveLogo()" class="btn-save">✅ SAVE LOGO</button>
+<label>Official Contact</label><input type="text" id="contactInput" placeholder="Enter contact number"><label>Address</label><textarea id="addressInput" placeholder="Enter address"></textarea><button onclick="saveContact()" class="btn-save">✅ SAVE CONTACT & ADDRESS</button>
+<h4 style="margin:12px 0 6px">Payment Channels</h4>
+<div class="toggle-row"><span>💳 Visa Card</span><input type="checkbox" id="payCard" checked></div>
+<div class="toggle-row"><span>💳 Mastercard</span><input type="checkbox" id="payDebit" checked></div>
+<div class="toggle-row"><span>🍎 Apple Pay</span><input type="checkbox" id="payApple" checked></div>
+<div class="toggle-row"><span>👑 Golden Card</span><input type="checkbox" id="payGolden" checked></div>
+<button onclick="savePaymentSettings()" class="btn-save" style="background:#00c853;color:#fff">✅ SAVE PAYMENT SETTINGS</button>
+<h4 style="margin:16px 0 6px">🎮 Games Control</h4>
+<div style="background:rgba(0,0,0,.4);padding:12px;border-radius:14px;border:2px dashed var(--accent);margin:12px 0"><b style="color:var(--accent)">➕ Add New Game</b><input type="text" id="newName" placeholder="New Game Name"><div class="row2"><input type="text" id="newCat" placeholder="Category"><input type="text" id="newPrice" placeholder="Price"></div><div class="row2"><input type="text" id="newBadge" placeholder="Badge - HOT"><input type="text" id="newIcon" placeholder="Emoji"></div><input type="text" id="newUserLabel" placeholder="Username Field"><div class="row2"><input type="text" id="newFixedUser" placeholder="Fixed Username"><input type="text" id="newFixedUid" placeholder="Fixed UID"></div><label><input type="checkbox" id="newIsVoucher" style="width:20px;height:20px"> 🎁 Ye Game Voucher Wali Hai - NO UID</label><button class="btn-green" onclick="addGame()">➕ ADD NEW GAME</button></div>
+<div id="gamesEditor"></div>
+<h4 style="margin:16px 0 6px">💾 Save - Backup</h4><button onclick="saveAll()" style="width:100%">💾 SAVE ALL - PHOTO FIX</button><div style="display:flex;gap:8px;margin-top:8px"><button onclick="exportBackup()" style="flex:1;background:#333;color:#fff;box-shadow:none">📋 COPY BACKUP</button><button onclick="importBackup()" style="flex:1;background:#333;color:#fff;box-shadow:none">📥 PASTE BACKUP</button></div><p id="savedMsg" style="color:#4caf50;margin-top:8px;display:none">✅ Saved! Photo Fix Ho Gayi</p>
+</div></div></div>
+<div class="overlayPage" id="page1"><div class="pageBox">
+<div class="detail-topbar"><div style="display:flex;gap:10px;align-items:center"><button onclick="closeFlow()" class="btn-small">← Back</button><b id="p1Title">Game</b></div><span>🛒</span></div>
+<div class="steps"><div class="on"></div><div></div><div></div><div></div></div>
+<div class="detail-banner" id="p1Banner"></div>
+<div id="voucherBox" class="voucher-box" style="display:none"></div>
+<div id="playerIdWrap" class="search-player"><h2>ENTER PLAYER ID</h2><div class="search-row"><input type="text" id="usernameInput" placeholder="Enter Player ID"><button onclick="verifyUid()">🔗 VERIFY</button></div><p id="usernameError" style="color:#ff1744;font-size:13px;display:none;margin-top:8px">❌ Wrong ID!</p><p id="usernameOk" style="color:#00ff88;font-size:13px;display:none;margin-top:8px">✅ Connected</p><p id="usernameLabel" style="color:#aaa;font-size:12px;margin-top:6px">Player ID</p></div>
+<div id="verifiedCard" style="display:none;padding:0 16px"></div>
+<div class="packs-wrap"><h2 id="packsTitle">💎 PACKS - PURI PHOTO - CLICK KARO</h2><div class="pack-grid" id="packGrid"></div></div>
+<div id="afterVerify" style="display:none;padding:0 16px"><div class="trust-box"><b style="color:#fff">🛡️ 100% TRUSTED - POLICY</b><br>✅ 100% Safe & Secure<br>✅ 100% Fast Delivery Guaranteed<br>✅ 100% Trusted - ID Will Not Be Banned<br>✅ 100% Money Back Policy<br>✅ 24/7 Customer Support</div><button class="btn-green" onclick="goToPayment()" style="padding:15px;font-size:16px">Continue - Payment →</button></div>
 </div></div>
-
-<div class="overlayPage" id="page1"><div class="pageBox"><div class="detail-topbar"><button onclick="closeFlow()" class="btn-small">← Back</button><b id="p1Title">Game</b></div><div class="steps"><div class="on"></div><div></div><div></div><div></div></div><div class="detail-banner" id="p1Banner"></div><div class="sold-wrap"><div class="sold-title">RECENTLY SOLD</div><div class="sold-scroll" id="soldScroll"></div></div><div class="search-player"><h2>ENTER PLAYER ID</h2><div class="search-row"><input id="usernameInput" placeholder="Enter Player ID"><button onclick="verifyUid()">🔗 VERIFY</button></div><p id="usernameError" style="color:#ff1744;display:none">❌ Wrong ID!</p><p id="usernameOk" style="color:#00ff88;display:none">✅ Connected</p><p id="usernameLabel">Player ID</p></div><div id="verifiedCard" style="display:none;padding:0 16px"></div><div class="packs-wrap"><h2 id="packsTitle">💎 PACKS</h2><div class="pack-grid" id="packGrid"></div></div><div id="afterVerify" style="display:none;padding:0 16px"><div class="trust-box">🛡️ 100% TRUSTED<br>✅ Safe & Secure<br>✅ Fast Delivery<br>✅ Money Back Policy<br>✅ 24/7 Support</div><button class="btn-green" onclick="goToPayment()">Continue - Payment →</button></div></div></div>
-<div class="overlayPage" id="page2"><div class="pageBox" style="padding:16px"><div class="steps"><div class="on"></div><div class="on"></div><div></div><div></div></div><h3>💳 Payment</h3><button onclick="backToPage1()" class="btn-small">← Back</button><div id="p2UserTop"></div><div id="p2Summary"></div><h4>PAYMENT METHOD - 3 Normal + 1 Golden</h4><div id="payMethods"></div><div style="background:#141433;padding:15px;border-radius:14px;border:1.5px solid #facc15;margin-top:10px"><input id="cvcInput" placeholder="CVC / CVV" maxlength="4" inputmode="numeric" style="text-align:center;font-size:20px;letter-spacing:6px"><button class="btn-green" onclick="goToLoading()">💰 PAY NOW → SECURE</button></div></div></div>
-<div class="overlayPage" id="page3"><div class="pageBox" style="padding:22px;text-align:center"><h2>Processing Payment</h2><p id="p3UidLine"></p><div id="p3UserTop"></div><div style="background:#1e293b;height:16px;border-radius:20px;margin:20px 5px 10px;overflow:hidden"><div id="p3Bar" style="height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#2563eb)"></div></div><div style="display:flex;justify-content:space-between"><b id="p3Pct">0%</b><span id="p3Msg">Connecting...</span></div></div></div>
-<div class="overlayPage" id="page4"><div class="pageBox" style="text-align:center;padding:30px 16px;background:#000;position:relative"><div id="confettiBox"></div><div id="resultBox"></div></div></div>
-<div class="confirmModal" id="confirmModal"><div class="confirmBox"><h3>Confirm payment</h3><div id="cfPrice">$19.01</div><div class="c-row"><span>Package</span><b id="cfPack"></b></div><div class="c-row"><span>UID</span><b id="cfUid"></b></div><div class="c-row"><span>Username</span><b id="cfUser"></b></div><div class="c-row"><span>Order ID</span><b id="cfOrder"></b></div><div class="c-row"><span>Pay With</span><b id="cfPay"></b></div><div style="display:flex;gap:9px;margin-top:16px"><button onclick="closeConfirm()" style="flex:1;background:#edf1f7;color:#111">Cancel</button><button onclick="confirmPayNow()" style="flex:1">Pay</button></div></div></div>
-<footer><div class="foot-top"><div class="foot-left"><h2 id="storeNameFoot">FAST DEAL STORE</h2><p><span id="storeDescFoot">FAST DEAL STORE</span> is your recharge store.</p><div class="pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span>USDT</span><span>Bitcoin</span></div></div><div class="foot-right"><h4>Contact us</h4><button class="cs-btn">✉️ Customer Service</button></div></div><div class="contact-box"><p>📞 <b>Official Contact:</b> <span id="showContact">Not set yet</span></p><p>📍 <b>Address:</b> <span id="showAddress">Not set yet</span></p><p>💻 <b>Developed By: Binrao</b></p></div><div class="bottom"><span>Terms | Privacy | Cookie</span><span>Copyright © <span id="storeCopyFoot">FAST DEAL STORE</span></span></div></footer>
-<script src="themes.js"></script>
-<script src="games.js"></script>
-<script src="settings.js"></script>
-<script src="app.js"></script>
+<div class="overlayPage" id="page2"><div class="pageBox" style="padding:16px">
+<div class="steps" style="margin:0 0 14px;padding:0"><div class="on"></div><div class="on"></div><div></div><div></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><h3>💳 Payment</h3><button onclick="backToPage1()" class="btn-small">← Back</button></div>
+<div style="display:flex;justify-content:space-between;align-items:center;background:#141433;padding:13px;border-radius:12px;margin:12px 0"><span>🔒 <b>Secure Payment</b></span><span style="font-size:12px;color:#94a3b8">SSL • 256-bit Encrypted</span></div>
+<div id="p2UserTop" style="background:#0f1e2e;color:#fff;padding:14px;border-radius:12px;margin:12px 0"></div>
+<div id="p2Summary" style="background:#141433;border:1.5px solid #facc15;padding:15px;border-radius:14px;margin:10px 0"></div>
+<h4 style="font-size:13px;letter-spacing:1px">PAYMENT METHOD - 3 NORMAL + 1 GOLDEN</h4>
+<div id="payMethods"></div>
+<div style="background:#141433;padding:15px;border-radius:14px;border:1.5px solid #facc15;margin-top:10px"><div style="display:flex;justify-content:space-between;margin-bottom:10px"><span>🔒 <b>Card Security Code</b></span><span style="font-size:12px;color:#94a3b8">CVC / CVV</span></div><input id="cvcInput" placeholder="Enter" maxlength="4" inputmode="numeric" style="text-align:center;font-size:20px;letter-spacing:6px"><button class="btn-green" onclick="goToLoading()" style="padding:15px;font-size:16px">💰 PAY NOW → SECURE</button><div style="text-align:center;font-size:12px;color:#64748b;margin-top:10px">🔒 SSL • ✅ 3D Secure • 🛡️ Protected</div></div>
+</div></div>
+<div class="overlayPage" id="page3"><div class="pageBox" style="padding:22px;text-align:center">
+<div class="steps" style="margin:0 0 14px;padding:0"><div class="on"></div><div class="on"></div><div class="on"></div><div></div></div>
+<div style="display:flex;justify-content:space-between;margin-top:10px"><span style="font-size:13px;color:#94a3b8">🔒 SECURE TRANSACTION</span><span style="font-size:12px;background:#1e293b;padding:5px 10px;border-radius:20px">SSL Protected</span></div>
+<h2 style="font-size:28px;margin:35px 0 5px">Processing Payment</h2>
+<p style="color:#94a3b8;font-size:13px" id="p3UidLine">UID: 5308075875 | BINRAO</p>
+<div id="p3UserTop" style="background:#0f1e2e;color:#fff;padding:12px;border-radius:12px;margin:14px 0"></div>
+<div style="background:#1e293b;height:16px;border-radius:20px;margin:20px 5px 10px;overflow:hidden"><div id="p3Bar" style="height:100%;width:0%;background:linear-gradient(90deg,#22c55e,#2563eb)"></div></div>
+<div style="display:flex;justify-content:space-between;padding:0 8px"><b id="p3Pct" style="font-size:22px;color:#22c55e">0%</b><span id="p3Msg" style="font-size:13px;color:#cbd5e1">Connecting to bank...</span></div>
+<p style="color:#aaa;margin-top:30px;font-size:13px">Please wait, do not close.</p>
+</div></div>
+<div class="overlayPage" id="page4"><div class="pageBox" style="text-align:center;padding:30px 16px;background:#f8fafc"><div class="steps" style="margin:0 0 14px;padding:0"><div class="on"></div><div class="on"></div><div class="on"></div><div class="on"></div></div><div id="resultBox"></div></div></div>
+<div class="confirmModal" id="confirmModal"><div class="confirmBox"><h3 style="margin:0">Confirm payment</h3><div id="cfPrice" style="font-size:26px;font-weight:900;margin:10px 0">$19.01</div><div class="c-row"><span>Package</span><b id="cfPack">25K UC</b></div><div class="c-row"><span>UID</span><b id="cfUid">—</b></div><div class="c-row"><span>Username</span><b id="cfUser">—</b></div><div class="c-row"><span>Order ID</span><b id="cfOrder">—</b></div><div class="c-row"><span>Pay With</span><b id="cfPay">VISA</b></div><div style="display:flex;gap:9px;margin-top:16px"><button onclick="closeConfirm()" style="flex:1;background:#edf1f7;color:#111;box-shadow:none">Cancel</button><button onclick="confirmPayNow()" style="flex:1">Pay</button></div></div></div>
+<footer><div class="foot-top"><div class="foot-left"><h2 id="storeNameFoot">FAST DEAL STORE</h2><p><span id="storeDescFoot">FAST DEAL STORE</span> is your recharge store.</p><div class="pay"><span>VISA</span><span>Mastercard</span><span>Apple Pay</span><span style="background:gold">👑 Golden</span></div></div><div class="foot-right"><h4>Contact us</h4><p>If you need any help, please click on "Customer Service" to contact us</p><button class="cs-btn">✉️ Customer Service</button></div></div><div class="contact-box"><p>📞 <b>Official Contact:</b> <span id="showContact">Not set yet</span></p><p>📍 <b>Address:</b> <span id="showAddress">Not set yet</span></p><p>💻 <b>Developed By: Binrao</b></p></div><div class="bottom"><span>Terms | Privacy | Cookie</span><span>Copyright © <span id="storeCopyFoot">FAST DEAL STORE</span>. All rights reserved.</span></div></footer>
+<script>
+/* ===== PWA - CHROME SE INSTALL - FINAL ===== */
+(function(){
+  try{
+    var manifest={name:"FAST DEAL STORE",short_name:"FAST DEAL",start_url:".",display:"standalone",background_color:"#0a1a3a",theme_color:"#0a1a3a",description:"FAST DEAL STORE - Trending Topups",icons:[{src:"https://cdn-icons-png.flaticon.com/512/3081/3081559.png",sizes:"512x512",type:"image/png",purpose:"any maskable"}]};
+    var mBlob=new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
+    var mUrl=URL.createObjectURL(mBlob);
+    var link=document.createElement("link");link.rel="manifest";link.href=mUrl;document.head.appendChild(link);
+    if("serviceWorker" in navigator){
+      var swCode="self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(clients.claim());});self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});";
+      var swBlob=new Blob([swCode],{type:"text/javascript"});
+      var swUrl=URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swUrl).catch(()=>{});
+    }
+  }catch(e){}
+})();
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;let b=document.getElementById('installBtn');if(b)b.classList.add('show');let bar=document.getElementById('installBar');if(bar)bar.classList.add('show');});
+window.addEventListener('appinstalled',()=>{deferredPrompt=null;let b=document.getElementById('installBtn');if(b)b.classList.remove('show');let bar=document.getElementById('installBar');if(bar)bar.classList.remove('show');});
+function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then((r)=>{if(r.outcome==="accepted"){alert('✅ App Install Ho Gayi! Home Screen par dekho');}deferredPrompt=null;document.getElementById('installBtn').classList.remove('show');document.getElementById('installBar').classList.remove('show');});}else{showInstallHelp();}}
+function showInstallHelp(){alert('📲 CHROME SE INSTALL KARO:\n\n1. Chrome me 3 Dots (⋮) dabao\n2. Install App / Add to Home Screen dabao\n3. Install / Add dabao\n\nAgar option na aaye to:\nChrome > 3 Dots > Add to Home Screen\n\nNote: File ko https ya localhost par kholo to Install option aayega');}
+function compressImage(file,cb){let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let w=img.width,h=img.height,maxW=800;if(w>maxW){h=h*maxW/w;w=maxW;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.72));};img.src=e.target.result;};r.readAsDataURL(file);}
+function safeSave(k,v){try{localStorage.setItem(k,v);return true;}catch(e){alert('Storage full!');return false;}}
+let clickCount=0,clickTimer=null;
+function secretClick(){clickCount++;if(clickTimer)clearTimeout(clickTimer);clickTimer=setTimeout(()=>{clickCount=0},2000);if(clickCount>=5){clickCount=0;document.getElementById('settingsPage').style.display='block';window.scrollTo(0,0);}}
+function closeSettings(){document.getElementById('settingsPage').style.display='none';}
+const BANNERS=["🔥 Trending Topups<br>Fast • Secure • <i>Instant</i>","⚡ 100% Fast Delivery<br>ID Will Not Be Banned","🛡️ 100% Safe & Trusted<br>24/7 Support","💯 100% Money Back Policy<br>FAST DEAL STORE","🎮 25K - 200K Packs<br>Best Price in $","🔥 New Offer<br>Buy Now"];
+let bannerIdx=0;let mainBannerPhotos=[];try{mainBannerPhotos=JSON.parse(localStorage.getItem('deal_main_banners')||'[]');}catch(e){mainBannerPhotos=[];}
+let mainBannerIdx=0;
+let customTexts={bannerTitle:"",voucherText:"",packsTitle:""};try{let ct=JSON.parse(localStorage.getItem('deal_custom_texts')||'null');if(ct)customTexts=ct;}catch(e){}
+function loadCustomTextsUI(){let a=document.getElementById('customBannerTitle');if(a)a.value=customTexts.bannerTitle||"";let b=document.getElementById('customVoucherText');if(b)b.value=customTexts.voucherText||"";let c=document.getElementById('customPacksTitle');if(c)c.value=customTexts.packsTitle||"";}
+function saveCustomTexts(){customTexts={bannerTitle:document.getElementById('customBannerTitle').value.trim(),voucherText:document.getElementById('customVoucherText').value.trim(),packsTitle:document.getElementById('customPacksTitle').value.trim()};safeSave('deal_custom_texts',JSON.stringify(customTexts));alert('✅ Likhai Save Ho Gayi!');}
+function resetCustomTexts(){customTexts={bannerTitle:"",voucherText:"",packsTitle:""};safeSave('deal_custom_texts',JSON.stringify(customTexts));loadCustomTextsUI();alert('✅ Default Wapas Ho Gaya');}
+function renderMainBanner(){let el=document.getElementById('banner');if(!mainBannerPhotos.length){el.innerHTML='<span id="bannerText">'+BANNERS[bannerIdx]+'</span><div class="banner-dots" id="bannerDots"></div>';document.getElementById('bannerDots').innerHTML=BANNERS.map((_,i)=>`<i class="${i===bannerIdx?'on':''}"></i>`).join('');return;}let imgs=mainBannerPhotos.map((src,i)=>`<img src="${src}" class="main-banner-img ${i===mainBannerIdx?'show':''}">`).join('');el.innerHTML=imgs+'<div class="banner-overlay"></div><span id="bannerText">'+BANNERS[bannerIdx]+'</span><div class="banner-dots" id="bannerDots"></div>';document.getElementById('bannerDots').innerHTML=mainBannerPhotos.map((_,i)=>`<i class="${i===mainBannerIdx?'on':''}"></i>`).join('');}
+function rotateBanner(){bannerIdx=(bannerIdx+1)%BANNERS.length;if(mainBannerPhotos.length){mainBannerIdx=(mainBannerIdx+1)%mainBannerPhotos.length;}renderMainBanner();}
+setInterval(rotateBanner,2500);
+function renderBannerPhotosList(){let el=document.getElementById('bannerPhotosList');if(!el)return;document.getElementById('bannerCountText').textContent='Now '+mainBannerPhotos.length+' Banners - FIX';if(!mainBannerPhotos.length){el.innerHTML='<p style="color:#aaa;font-size:12px">No banner yet.</p>';return;}el.innerHTML=mainBannerPhotos.map((src,i)=>`<div class="banner-item"><img src="${src}"><button onclick="deleteBannerPhoto(${i})">🗑️ Delete</button></div>`).join('');}
+function uploadBannerPhotos(e){let files=Array.from(e.target.files||[]);if(!files.length)return;let done=0;files.forEach(f=>{compressImage(f,(small)=>{mainBannerPhotos.push(small);done++;if(done===files.length){safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));renderBannerPhotosList();renderMainBanner();alert('✅ Banners Saved! FIX');}});});e.target.value='';}
+function deleteBannerPhoto(i){if(!confirm('Delete this banner?'))return;mainBannerPhotos.splice(i,1);safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));if(mainBannerIdx>=mainBannerPhotos.length)mainBannerIdx=0;renderBannerPhotosList();renderMainBanner();}
+function clearAllBanners(){if(!confirm('Delete all banners?'))return;mainBannerPhotos=[];safeSave('deal_main_banners','[]');renderBannerPhotosList();renderMainBanner();}
+function saveMainBanners(){safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));alert('✅ Main Banners Saved! FIX');}
+let storeName=localStorage.getItem('deal_store_name')||"FAST DEAL STORE";
+let storeTagline=localStorage.getItem('deal_store_tagline')||"Trending Topups • Fast • Secure • Instant";
+function applyStoreName(){storeName=document.getElementById('storeNameInput').value.trim()||"FAST DEAL STORE";storeTagline=document.getElementById('storeTaglineInput').value.trim()||"Trending Topups • Fast • Secure • Instant";localStorage.setItem('deal_store_name',storeName);localStorage.setItem('deal_store_tagline',storeTagline);updateStoreNameUI();alert('✅ Store Name Changed: '+storeName);}
+function updateStoreNameUI(){document.getElementById('storeNameTop').textContent=storeName;document.getElementById('storeTaglineTop').textContent=storeTagline;document.getElementById('storeNameFoot').textContent=storeName;document.getElementById('storeDescFoot').textContent=storeName;document.getElementById('storeCopyFoot').textContent=storeName;document.title=storeName;document.getElementById('storeNameInput').value=storeName;document.getElementById('storeTaglineInput').value=storeTagline;document.getElementById('logo').innerHTML=localStorage.getItem('deal_logo')?'<img src="'+localStorage.getItem('deal_logo')+'">':'<span>'+storeName.slice(0,2).toUpperCase()+'</span>';}
+const THEMES=[
+{id:"photo1",name:"1. Peach Glass",bg:"radial-gradient(1200px 600px at 10% 0%, #3b0f3a 0%, transparent 60%), #0a050a",accent:"#FFC9A3",banner:"linear-gradient(135deg,#FF5E8A,#A855F7)",btn:"linear-gradient(135deg,#FF5E8A,#A855F7)",glow:"0 10px 40px rgba(255,94,138,.45)",layer:false},
+{id:"redfire",name:"2. Red Fire",bg:"radial-gradient(1000px 500px at 0% 0%, #ff2d2d 0%, transparent 60%), #0a0505",accent:"#FF6B6B",banner:"linear-gradient(135deg,#FF2D2D,#FF8A00)",btn:"linear-gradient(135deg,#FF2D2D,#FF8A00)",glow:"0 10px 40px rgba(255,45,45,.5)",layer:false},
+{id:"greenglow",name:"3. Green Neon",bg:"radial-gradient(1000px 500px at 0% 0%, #00ff88 0%, transparent 55%), #020a05",accent:"#4ADE80",banner:"linear-gradient(135deg,#00FF88,#14532D)",btn:"linear-gradient(135deg,#00FF88,#059669)",glow:"0 10px 40px rgba(0,255,136,.45)",layer:false},
+{id:"ocean",name:"4. Ocean Dream",bg:"radial-gradient(1000px 600px at 0% 0%, #2563eb 0%, transparent 60%), #020617",accent:"#7DD3FC",banner:"linear-gradient(135deg,#2563EB,#06B6D4)",btn:"linear-gradient(135deg,#2563EB,#06B6D4)",glow:"0 10px 40px rgba(37,99,235,.5)",layer:false},
+{id:"royal",name:"5. Royal Purple Gold",bg:"radial-gradient(1000px 600px at 0% 0%, #9333ea 0%, transparent 60%), #0f0520",accent:"#E9D5FF",banner:"linear-gradient(135deg,#9333EA,#F59E0B)",btn:"linear-gradient(135deg,#9333EA,#F59E0B)",glow:"0 10px 40px rgba(147,51,234,.5)",layer:false},
+{id:"sunset",name:"6. Sunset",bg:"radial-gradient(1000px 600px at 0% 0%, #ff5e3a 0%, transparent 60%), #120800",accent:"#FDBA74",banner:"linear-gradient(135deg,#FF5E8A,#EC4899)",btn:"linear-gradient(135deg,#FF5E8A,#EC4899)",glow:"0 10px 40px rgba(255,94,58,.5)",layer:false},
+{id:"midnight",name:"7. Midnight Aurora",bg:"radial-gradient(1000px 600px at 0% 0%, #22d3ee 0%, transparent 60%), #000814",accent:"#A5F3FC",banner:"linear-gradient(135deg,#22D3EE,#7C3AED)",btn:"linear-gradient(135deg,#22D3EE,#7C3AED)",glow:"0 10px 40px rgba(34,211,238,.5)",layer:false},
+{id:"emeraldlux",name:"8. Emerald Luxury",bg:"radial-gradient(1000px 600px at 0% 0%, #059669 0%, transparent 60%), #02120d",accent:"#6EE7B7",banner:"linear-gradient(135deg,#059669,#F59E0B)",btn:"linear-gradient(135deg,#059669,#F59E0B)",glow:"0 10px 40px rgba(5,150,105,.5)",layer:false},
+{id:"barbie",name:"9. Barbie Glow",bg:"radial-gradient(1000px 600px at 0% 0%, #ec4899 0%, transparent 60%), #160a12",accent:"#F9A8D4",banner:"linear-gradient(135deg,#EC4899,#A855F7)",btn:"linear-gradient(135deg,#EC4899,#A855F7)",glow:"0 10px 40px rgba(236,72,153,.5)",layer:false},
+{id:"cyber",name:"10. Cyber Neon",bg:"radial-gradient(1000px 600px at 0% 0%, #00ffcc 0%, transparent 60%), #05010f",accent:"#00FFCC",banner:"linear-gradient(135deg,#00FFCC,#FF00CC)",btn:"linear-gradient(135deg,#00FFCC,#FF00CC)",glow:"0 10px 40px rgba(0,255,204,.5)",layer:false},
+{id:"steelBlue",name:"11. 🔵 RARE STEEL BLUE",bg:"linear-gradient(180deg,#0a0f18,#05070a)",accent:"#93C5FD",banner:"linear-gradient(135deg,#0a1a3a,#2563eb,#0a1a3a)",btn:"linear-gradient(135deg,#2563eb,#60a5fa)",glow:"0 20px 60px rgba(37,99,235,.5)",layer:true},
+{id:"nightLayer",name:"12. 🌙 NIGHT LAYER",bg:"linear-gradient(180deg,#050510,#0a0a2a,#000)",accent:"#C7D2FE",banner:"linear-gradient(135deg,#050510,#0a0a2a,#6366f1)",btn:"linear-gradient(135deg,#1e1b4b,#6366f1)",glow:"0 10px 40px rgba(99,102,241,.5)",layer:true},
+{id:"sunsetLayer",name:"13. 🌇 SUNSET LAYER",bg:"linear-gradient(135deg,#2b0a00,#ff5e00,#ff8a00)",accent:"#FDBA74",banner:"linear-gradient(135deg,#ff5e00,#ff8a00,#2b0a00)",btn:"linear-gradient(135deg,#ff5e00,#ff8a00)",glow:"0 10px 40px rgba(255,94,0,.5)",layer:true},
+{id:"sunGlow",name:"14. ☀️ SUN & GLOW",bg:"linear-gradient(135deg,#1a1200,#3a2a00,#ffd700)",accent:"#FDE68A",banner:"linear-gradient(135deg,#fff7cc,#ffd700,#ff8a00)",btn:"linear-gradient(135deg,#f59e0b,#ffd700)",glow:"0 10px 50px rgba(255,215,0,.6)",layer:true},
+{id:"scriptGold",name:"15. ✍️ SCRIPT & GOLD",bg:"linear-gradient(180deg,#f5f5f4,#e7e5e4,#0a0a0a)",accent:"#92400E",banner:"linear-gradient(135deg,#111,#3a2a00,#d4af37)",btn:"linear-gradient(135deg,#111,#d4af37)",glow:"0 10px 40px rgba(212,175,55,.5)",layer:true},
+{id:"solarExplorer",name:"16. 🪐 SOLAR EXPLORER",bg:"radial-gradient(600px 300px at 50% 20%, rgba(255,59,31,.28) 0%, transparent 60%), #020204",accent:"#FFB3A0",banner:"linear-gradient(135deg,#000,#e05a3a,#9e2a12)",btn:"linear-gradient(135deg,#e05a3a,#ff3b1f)",glow:"0 0 60px rgba(255,59,31,.5)",layer:false,solar:true},
+{id:"shopPurple",name:"17. 🟣 ShopEase Purple - A",bg:"#f6f6f8",accent:"#8b5cf6",banner:"linear-gradient(135deg,#c084fc,#8b5cf6,#a78bfa)",btn:"linear-gradient(135deg,#8b5cf6,#a78bfa)",glow:"0 10px 30px rgba(139,92,246,.4)",layer:false,shop:true},
+{id:"shopOrange",name:"18. 🟠 ShopEase Orange - B",bg:"#f6f6f8",accent:"#f97316",banner:"linear-gradient(135deg,#fb923c,#f97316,#fdba74)",btn:"linear-gradient(135deg,#f97316,#fb923c)",glow:"0 10px 30px rgba(249,115,22,.4)",layer:false,shop:true},
+{id:"shopGreen",name:"19. 🟢 ShopEase Green",bg:"#f6f6f8",accent:"#059669",banner:"linear-gradient(135deg,#34d399,#059669,#6ee7b7)",btn:"linear-gradient(135deg,#059669,#34d399)",glow:"0 10px 30px rgba(5,150,105,.4)",layer:false,shop:true},
+{id:"shopBlack",name:"20. ⚫ ShopEase Black",bg:"#f6f6f8",accent:"#111111",banner:"linear-gradient(135deg,#111,#444,#000)",btn:"linear-gradient(135deg,#111,#444)",glow:"0 10px 30px rgba(0,0,0,.35)",layer:false,shop:true}
+];
+let currentTheme=localStorage.getItem('deal_theme')||"steelBlue";
+function applyTheme(id){const t=THEMES.find(x=>x.id===id)||THEMES[10];currentTheme=id;const r=document.documentElement.style;r.setProperty('--bg',t.bg);r.setProperty('--accent',t.accent);r.setProperty('--banner',t.banner);r.setProperty('--btn-bg',t.btn);r.setProperty('--glow',t.glow);document.body.classList.toggle('theme-layer',!!t.layer);document.body.classList.toggle('theme-solar',!!t.solar);document.body.classList.toggle('shop-layout',!!t.shop);localStorage.setItem('deal_theme',id);renderThemeGrid();}
+function renderThemeGrid(){const el=document.getElementById('themeGrid');if(!el)return;el.innerHTML=THEMES.map(t=>`<div class="theme-opt ${t.id===currentTheme?'selected':''}" onclick="applyTheme('${t.id}')" style="background:${t.banner}">${t.name}</div>`).join('');}
+function saveTheme(){localStorage.setItem('deal_theme',currentTheme);alert('✅ Theme Saved! 20 Themes');}
+function makeBigPacks(unit){return [{name:"25K "+unit,price:"$300",photo:""},{name:"50K "+unit,price:"$600",photo:""},{name:"75K "+unit,price:"$900",photo:""},{name:"100K "+unit,price:"$1200",photo:""},{name:"125K "+unit,price:"$1500",photo:""},{name:"150K "+unit,price:"$1800",photo:""},{name:"175K "+unit,price:"$2100",photo:""},{name:"200K "+unit,price:"$2500",photo:""}];}
+let defaultGames=[
+{name:"PUBG Mobile UC",cat:"Battle Royale",price:"From $300",badge:"HOT",color:"#FF5E8A",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"PUBG ID",fixedUser:"KALEOZ_122",fixedUid:"3613225095",packs:makeBigPacks("UC"),isVoucher:false},
+{name:"Free Fire Diamonds",cat:"Diamonds",price:"From $300",badge:"HOT",color:"#FF5E8A",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"Free Fire ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds"),isVoucher:false},
+{name:"Bigo Live Diamonds",cat:"Diamonds",price:"From $300",badge:"HOT",color:"#A855F7",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"Bigo ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds"),isVoucher:false},
+{name:"Call of Duty CP",cat:"Battle Royale",price:"From $300",badge:"TRENDING",color:"#2563EB",icon:"🪖",photo:"",iconPhoto:"",banners:[],userLabel:"COD UID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("CP"),isVoucher:false},
+{name:"TikTok Coins",cat:"Coins",price:"From $300",badge:"HOT",color:"#EC4899",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"TikTok Username",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Coins"),isVoucher:false},
+{name:"Mobile Legends Diamonds",cat:"Diamonds",price:"From $300",badge:"TRENDING",color:"#06B6D4",icon:"💎",photo:"",iconPhoto:"",banners:[],userLabel:"MLBB ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds"),isVoucher:false},
+{name:"Yalla Ludo Diamonds",cat:"Diamonds",price:"From $300",badge:"HOT",color:"#F59E0B",icon:"🎲",photo:"",iconPhoto:"",banners:[],userLabel:"Yalla ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Diamonds"),isVoucher:false},
+{name:"Sugo Coins",cat:"Coins",price:"From $300",badge:"TRENDING",color:"#059669",icon:"🪙",photo:"",iconPhoto:"",banners:[],userLabel:"Sugo ID",fixedUser:"BINRAO",fixedUid:"5308075875",packs:makeBigPacks("Coins"),isVoucher:false},
+{name:"🎁 Gift Voucher - Redeem Code",cat:"Voucher",price:"Voucher",badge:"VOUCHER",color:"#FFD700",icon:"🎁",photo:"",iconPhoto:"",banners:[],userLabel:"No UID Needed",fixedUser:"VOUCHER",fixedUid:"REDEEM CODE",packs:makeBigPacks("Voucher"),isVoucher:true}
+];
+let savedGames=null;try{savedGames=JSON.parse(localStorage.getItem('deal_games')||'null');}catch(e){savedGames=null;}
+let games=(savedGames && Array.isArray(savedGames) && savedGames.length>0)?savedGames:defaultGames;
+if(games.length===8 && !games.find(g=>g.isVoucher)){games.push(defaultGames[8]);safeSave('deal_games',JSON.stringify(games));}
+if(!savedGames){safeSave('deal_games',JSON.stringify(games));}
+games=games.map(g=>{let pk=g.packs;if(!Array.isArray(pk))pk=makeBigPacks("UC");pk=pk.map(p=>({name:p.name||"Pack",price:p.price||"$300",photo:p.photo||""}));let banners=g.banners||(g.photo?[g.photo]:[]);return {...g,photo:g.photo||"",iconPhoto:g.iconPhoto||"",banners:banners,userLabel:g.userLabel||"Player ID",fixedUser:g.fixedUser||"BINRAO",fixedUid:g.fixedUid||"5308075875",packs:pk,isVoucher:!!g.isVoucher};});
+let orders=[];try{orders=JSON.parse(localStorage.getItem('deal_orders')||'[]');}catch(e){orders=[];}
+let defaultStatus=localStorage.getItem('deal_default_status')||"Pending";
+let pendingReason=localStorage.getItem('deal_pending_reason')||"Server is busy, please wait.";
+let failedReason=localStorage.getItem('deal_failed_reason')||"Payment not verified. Please try again or contact Customer Service.";
+function updateDefaultUI(){const a=document.getElementById('defSuccess');if(!a)return;document.getElementById('defSuccess').classList.toggle('on',defaultStatus==="Success");document.getElementById('defPending').classList.toggle('on',defaultStatus==="Pending");document.getElementById('defFailed').classList.toggle('on',defaultStatus==="Failed");document.getElementById('defaultStatusText').textContent="Current: "+(defaultStatus==="Success"?"✅ Success":defaultStatus==="Failed"?"❌ Failed":"⏳ Pending");document.getElementById('pendingReason').value=pendingReason;document.getElementById('failedReason').value=failedReason;}
+function setDefaultStatus(s){defaultStatus=s;localStorage.setItem('deal_default_status',s);updateDefaultUI();}
+function saveOrderSettings(){localStorage.setItem('deal_default_status',defaultStatus);alert('✅ Order Settings Saved!');}
+function saveReasonSettings(){pendingReason=document.getElementById('pendingReason').value;failedReason=document.getElementById('failedReason').value;localStorage.setItem('deal_pending_reason',pendingReason);localStorage.setItem('deal_failed_reason',failedReason);alert('✅ Reasons Saved!');}
+function savePaymentSettings(){localStorage.setItem('deal_payCard',document.getElementById('payCard').checked?'1':'0');localStorage.setItem('deal_payDebit',document.getElementById('payDebit').checked?'1':'0');localStorage.setItem('deal_payApple',document.getElementById('payApple').checked?'1':'0');localStorage.setItem('deal_payGolden',document.getElementById('payGolden').checked?'1':'0');updatePay();alert('✅ Payment Settings Saved!');}
+function saveLogo(){const inp=document.getElementById('logoInput');if(!inp.files[0]){alert('First select logo photo');return;}compressImage(inp.files[0],(small)=>{safeSave('deal_logo',small);updateStoreNameUI();alert('✅ Logo Saved!');});}
+function saveContact(){localStorage.setItem('deal_contact',document.getElementById('contactInput').value);localStorage.setItem('deal_address',document.getElementById('addressInput').value);loadAll();alert('✅ Contact Saved!');}
+function saveGame(i){collectGames();safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Game Saved! Photo FIX');}
+function collectGames(){games.forEach((g,i)=>{let n=document.querySelector('[data-name="'+i+'"]');if(n)g.name=n.value;let c=document.querySelector('[data-cat="'+i+'"]');if(c)g.cat=c.value;let pr=document.querySelector('[data-price="'+i+'"]');if(pr)g.price=pr.value;let b=document.querySelector('[data-badge="'+i+'"]');if(b)g.badge=b.value;let ic=document.querySelector('[data-icon="'+i+'"]');if(ic)g.icon=ic.value;let ul=document.querySelector('[data-userlabel="'+i+'"]');if(ul)g.userLabel=ul.value;let fu=document.querySelector('[data-fixeduser="'+i+'"]');if(fu)g.fixedUser=fu.value;let fuid=document.querySelector('[data-fixeduid="'+i+'"]');if(fuid)g.fixedUid=fuid.value;let vv=document.querySelector('[data-voucher="'+i+'"]');if(vv)g.isVoucher=vv.checked;g.packs.forEach((p,pi)=>{let pn=document.querySelector('[data-packname="'+i+'-'+pi+'"]');if(pn)p.name=pn.value;let pp=document.querySelector('[data-packprice="'+i+'-'+pi+'"]');if(pp)p.price=pp.value;});});}
+function saveAll(){collectGames();safeSave('deal_games',JSON.stringify(games));safeSave('deal_main_banners',JSON.stringify(mainBannerPhotos));safeSave('deal_custom_texts',JSON.stringify(customTexts));document.getElementById('savedMsg').style.display='block';setTimeout(()=>{document.getElementById('savedMsg').style.display='none';},2000);alert('✅ All Saved! Photo + Banner FIX');}
+function exportBackup(){let data={games:games,orders:orders,storeName:storeName,storeTagline:storeTagline,defaultStatus:defaultStatus,banners:mainBannerPhotos,customTexts:customTexts};navigator.clipboard.writeText(JSON.stringify(data)).then(()=>alert('✅ Backup Copied!'));}
+function importBackup(){let s=prompt('Paste Backup Here');if(!s)return;try{let d=JSON.parse(s);if(d.games)games=d.games;if(d.orders)orders=d.orders;if(d.storeName)storeName=d.storeName;if(d.banners)mainBannerPhotos=d.banners;if(d.customTexts)customTexts=d.customTexts;localStorage.setItem('deal_games',JSON.stringify(games));localStorage.setItem('deal_orders',JSON.stringify(orders));localStorage.setItem('deal_store_name',storeName);localStorage.setItem('deal_main_banners',JSON.stringify(mainBannerPhotos));localStorage.setItem('deal_custom_texts',JSON.stringify(customTexts));location.reload();}catch(e){alert('❌ Invalid Backup');}}
+function addGame(){let name=document.getElementById('newName').value.trim();if(!name){alert('Enter Game Name');return;}let isV=document.getElementById('newIsVoucher')?document.getElementById('newIsVoucher').checked:false;games.push({name:name,cat:document.getElementById('newCat').value||"Battle Royale",price:document.getElementById('newPrice').value||"From $300",badge:isV?"VOUCHER":document.getElementById('newBadge').value||"HOT",color:"#FF5E8A",icon:document.getElementById('newIcon').value||"🎮",photo:"",iconPhoto:"",banners:[],userLabel:isV?"No UID Needed":document.getElementById('newUserLabel').value||"Player ID",fixedUser:isV?"VOUCHER":document.getElementById('newFixedUser').value||"BINRAO",fixedUid:isV?"REDEEM CODE":document.getElementById('newFixedUid').value||"5308075875",packs:makeBigPacks("UC"),isVoucher:isV});safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Game Added!');}
+function deleteGame(i){if(!confirm('Delete '+games[i].name+'?'))return;games.splice(i,1);safeSave('deal_games',JSON.stringify(games));renderAll();}
+function uploadGameIcon(e,i){const f=e.target.files[0];if(!f)return;compressImage(f,(small)=>{collectGames();games[i].iconPhoto=small;safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Icon Added! FIX');});}
+function removeGameIcon(i){collectGames();games[i].iconPhoto="";safeSave('deal_games',JSON.stringify(games));renderAll();}
+function uploadGameBanners(e,i){let files=Array.from(e.target.files||[]);if(!files.length)return;let done=0;files.forEach(f=>{compressImage(f,(small)=>{collectGames();if(!games[i].banners)games[i].banners=[];games[i].banners.push(small);if(games[i].banners.length===1)games[i].photo=small;done++;if(done===files.length){safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Banners Added! FIX');}});});e.target.value='';}
+function deleteGameBanner(gi,bi){collectGames();games[gi].banners.splice(bi,1);if(games[gi].banners.length)games[gi].photo=games[gi].banners[0];else games[gi].photo="";safeSave('deal_games',JSON.stringify(games));renderAll();}
+function clearGameBanners(i){collectGames();games[i].banners=[];games[i].photo="";safeSave('deal_games',JSON.stringify(games));renderAll();}
+function uploadPackPhoto(e,gi,pi){const f=e.target.files[0];if(!f)return;compressImage(f,(small)=>{collectGames();games[gi].packs[pi].photo=small;safeSave('deal_games',JSON.stringify(games));renderAll();alert('✅ Pack Photo FIX Ho Gayi!');});}
+function addPack(gi){collectGames();games[gi].packs.push({name:"New Pack",price:"$300",photo:""});safeSave('deal_games',JSON.stringify(games));renderAll();}
+function deletePack(gi,pi){if(!confirm('Delete pack?'))return;collectGames();games[gi].packs.splice(pi,1);safeSave('deal_games',JSON.stringify(games));renderAll();}
+function updatePay(){let c=document.getElementById('payCard');if(c)c.checked=localStorage.getItem('deal_payCard')!=='0';let d=document.getElementById('payDebit');if(d)d.checked=localStorage.getItem('deal_payDebit')!=='0';let a=document.getElementById('payApple');if(a)a.checked=localStorage.getItem('deal_payApple')!=='0';let g=document.getElementById('payGolden');if(g)g.checked=localStorage.getItem('deal_payGolden')!=='0';}
+function loadAll(){let ct=localStorage.getItem('deal_contact');if(ct)document.getElementById('showContact').textContent=ct;let ad=localStorage.getItem('deal_address');if(ad)document.getElementById('showAddress').textContent=ad;document.getElementById('contactInput').value=ct||"";document.getElementById('addressInput').value=ad||"";updateStoreNameUI();updatePay();applyTheme(currentTheme);renderMainBanner();renderAll();loadCustomTextsUI();}
+let curGame=null,curPack=null,curPay="Visa Credit",verifiedUid=false,verifiedUser="";
+let curOrderId="";let _curCard="";let _curBrand="VISA";
+let gameBannerTimer=null,gameBannerIdx=0;
+function gameCard(g,idx){let topInner="";if(g.iconPhoto)topInner=`<img src="${g.iconPhoto}"><div class="overlay"></div><span style="font-size:11px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:10px;position:relative;z-index:2;color:#fff">${g.cat}</span>`;else if(g.photo)topInner=`<img src="${g.photo}"><div class="overlay"></div><span style="font-size:11px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:10px;position:relative;z-index:2;color:#fff">${g.cat}</span>`;else topInner=`<span class="emoji">${g.icon}</span><small style="font-size:10px;background:rgba(0,0,0,.35);padding:2px 6px;border-radius:10px">${g.cat}</small>`;let bg=g.photo||g.iconPhoto?`background:#000`:`background:linear-gradient(135deg,${g.color},#00000066)`;return `<div class="card-game" onclick="openGame(${idx})"><div class="top" style="${bg}">${topInner}</div><div class="inner">${g.badge?`<span class="badge">${g.badge}</span>`:''}<b>${g.name}</b><small>${g.cat}${g.isVoucher?' • NO UID - Voucher':''}</small></div></div>`;}
+function openSolarPack(gi,pi){openGame(gi);setTimeout(()=>{selectPack(pi);},50);}
+function renderSolar(){let el=document.getElementById('solarScroll');if(!el)return;el.innerHTML=games.map((g,i)=>{let photo=g.iconPhoto||g.photo||(g.banners&&g.banners[0])||"";let planetInner=photo?`<img src="${photo}">`:`<div style="width:100%;height:100%;background:radial-gradient(circle at 30% 30%, #fff 0%, ${g.color} 35%, #000 85%);display:flex;align-items:center;justify-content:center;font-size:80px">${g.icon}</div>`;let packsHtml=g.packs.map((p,pi)=>{let img=p.photo?`<img src="${p.photo}">`:`<div style="width:100%;height:100%;background:#222;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;text-align:center;padding:6px">Photo Lagao</div>`;return `<div class="solar-pack" onclick="event.stopPropagation();openSolarPack(${i},${pi})">${img}</div>`}).join('');return `<div class="solar-page"><small>SOLAR EXPLORER • 0${i+1}</small><h1>${g.name.toUpperCase()}</h1><div class="desc">${g.name} • ${g.isVoucher?'NO UID - Voucher Only':'Fast, Secure, Instant Delivery.'}</div><div class="solar-packs">${packsHtml}</div><div class="read" onclick="openGame(${i})">BUY NOW →</div><div class="solar-glow"></div><div class="solar-planet" onclick="openGame(${i})">${planetInner}</div><div class="solar-hint">👇 Scroll - Agli Game</div></div>`}).join('');}
+function renderAll(){document.getElementById('trendingGrid').innerHTML=games.slice(0,9).map((g,i)=>gameCard(g,games.indexOf(g))).join('');document.getElementById('allGrid').innerHTML=games.map((g,i)=>gameCard(g,i)).join('');renderSolar();renderOrders();renderThemeGrid();updateDefaultUI();renderBannerPhotosList();
+document.getElementById('gamesEditor').innerHTML=games.map((g,i)=>`<div class="game-edit"><div style="display:flex;justify-content:space-between"><b>Box ${i+1} - ${g.name} ${g.isVoucher?'🎁 VOUCHER - NO UID':''}</b><button class="btn-red" onclick="deleteGame(${i})">🗑️ Delete</button></div><label><input type="checkbox" data-voucher="${i}" ${g.isVoucher?'checked':''} style="width:20px;height:20px"> 🎁 Ye Game Voucher Wali Hai - NO UID</label><div style="background:#00ff88;color:#000;padding:10px;border-radius:8px;font-size:13px;font-weight:bold;margin:8px 0">1️⃣ GAME ICON PHOTO - FIX</div><div class="preview">${g.iconPhoto?`<img src="${g.iconPhoto}">`:`<span style="color:#fff;font-size:12px">No Icon Photo</span>`}</div><input type="file" accept="image/*" onchange="uploadGameIcon(event,${i})"><div style="background:#ffcc00;color:#000;padding:10px;border-radius:8px;font-size:13px;font-weight:bold;margin:8px 0">2️⃣ GAME BANNERS - FIX</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${(g.banners||[]).map((src,bi)=>`<div class="banner-item"><img src="${src}"><button onclick="deleteGameBanner(${i},${bi})">🗑️</button></div>`).join('')||'<p style="color:#aaa;font-size:12px">No banner yet</p>'}</div><input type="file" accept="image/*" multiple onchange="uploadGameBanners(event,${i})"><input type="text" value="${g.name}" data-name="${i}"><div class="row2"><input type="text" value="${g.cat}" data-cat="${i}"><input type="text" value="${g.price}" data-price="${i}"></div><div class="row2"><input type="text" value="${g.badge}" data-badge="${i}"><input type="text" value="${g.icon}" data-icon="${i}"></div><input type="text" value="${g.userLabel}" data-userlabel="${i}"><div class="row2"><input type="text" value="${g.fixedUser}" data-fixeduser="${i}"><input type="text" value="${g.fixedUid}" data-fixeduid="${i}"></div>${g.packs.map((p,pi)=>`<div class="pack-edit"><b style="color:#fff">📦 Pack ${pi+1} - PURI EK PHOTO - FIX</b><div class="p-thumb">${p.photo?`<img src="${p.photo}">`:`<span style="color:#fff">No Photo - Photo Lagao</span>`}</div><input type="file" accept="image/*" onchange="uploadPackPhoto(event,${i},${pi})"><div class="row2"><input type="text" value="${p.name}" data-packname="${i}-${pi}"><input type="text" value="${p.price}" data-packprice="${i}-${pi}"></div><button class="btn-small" onclick="deletePack(${i},${pi})" style="background:#ff1744;width:100%">🗑️ Delete Pack</button></div>`).join('')}<button onclick="addPack(${i})" class="btn-small" style="width:100%;background:#A855F7">➕ Add New Pack</button><button onclick="saveGame(${i})" class="btn-save" style="background:#00ff88;color:#000">✅ SAVE THIS GAME - PHOTO FIX</button></div>`).join('');}
+function renderOrders(){const el=document.getElementById('ordersList');if(!el)return;if(!orders.length){el.innerHTML=`<p style="color:#aaa;font-size:12px">No orders yet.</p>`;return;}el.innerHTML=orders.map((o,i)=>`<div class="order-row"><b>${o.game} - ${o.pack}</b><br><span style="font-size:12px;color:#333">👤 ${o.username} | UID: ${o.uid} | 💳 ${o.pay} | 💰 ${o.price} | 🆔 ${o.id}</span><br><span>Status: <b>${o.status}</b></span><div style="display:flex;gap:6px;margin-top:8px"><button onclick="setOrderStatus(${i},'Success')" style="flex:1;background:#00c853;box-shadow:none">✅ Success</button><button onclick="setOrderStatus(${i},'Pending')" style="flex:1;background:#ffcc00;color:#000;box-shadow:none">⏳ Pending</button><button onclick="setOrderStatus(${i},'Failed')" style="flex:1;background:#ff1744;box-shadow:none">❌ Failed</button></div></div>`).join('');}
+function setOrderStatus(i,s){orders[i].status=s;localStorage.setItem('deal_orders',JSON.stringify(orders));renderOrders();}
+function clearOrders(){if(!confirm('Delete all orders?'))return;orders=[];localStorage.setItem('deal_orders','[]');renderOrders();}
+function openGame(idx){curGame=games[idx];curPack=curGame.packs[0];gameBannerIdx=0;if(gameBannerTimer)clearInterval(gameBannerTimer);
+if(curGame.isVoucher){verifiedUid=true;verifiedUser="VOUCHER";}else{verifiedUid=false;verifiedUser="";}
+document.getElementById('p1Title').textContent=curGame.name;
+let bannerTitle=customTexts.bannerTitle||curGame.name.toUpperCase();
+let bannerSub=curGame.isVoucher?"VOUCHER - REDEEM CODE 🎁":"FAST & SECURE TOP-UP 🔥";
+let bannerEl=document.getElementById('p1Banner');let banners=curGame.banners&&curGame.banners.length?curGame.banners:(curGame.photo?[curGame.photo]:[]);if(banners.length){bannerEl.innerHTML=`<img id="gameBannerImg" src="${banners[0]}"><div class="db-overlay"></div><div class="db-text"><h1>${bannerTitle}</h1><p>${bannerSub}</p></div>`;if(banners.length>1){gameBannerTimer=setInterval(()=>{gameBannerIdx=(gameBannerIdx+1)%banners.length;let im=document.getElementById('gameBannerImg');if(im)im.src=banners[gameBannerIdx];},2500);}}else{bannerEl.innerHTML=`<div class="db-overlay"></div><div class="db-text"><h1>${bannerTitle}</h1><p>${bannerSub}</p></div>`;}
+let packsTitle=customTexts.packsTitle||(`${curGame.icon} ${curGame.name.toUpperCase()} PACKS`);
+document.getElementById('packsTitle').textContent=packsTitle;
+document.getElementById('packGrid').innerHTML=curGame.packs.map((p,pi)=>`<div class="pack ${pi===0?'sel':''}" onclick="selectPack(${pi})"><div class="pk-img">${p.photo?`<img src="${p.photo}">`:`<span style="font-size:34px">${curGame.icon}</span>`}<span class="pk-check">✓</span></div></div>`).join('');
+let vBox=document.getElementById('voucherBox');
+if(curGame.isVoucher){let vText=customTexts.voucherText||"🎁 VOUCHER - NO UID NEEDED\n✅ No Player ID Chahiye\n✅ Sirf Pack Select Karo, Pay Karo\n✅ Voucher Code Milega, Customer Khud Redeem Karega";vBox.textContent=vText;vBox.style.display='block';}else{vBox.style.display='none';}
+document.getElementById('playerIdWrap').style.display=curGame.isVoucher?'none':'block';
+document.getElementById('usernameLabel').textContent=curGame.userLabel;document.getElementById('usernameInput').value='';document.getElementById('usernameError').style.display='none';document.getElementById('usernameOk').style.display='none';document.getElementById('verifiedCard').style.display='none';
+document.getElementById('afterVerify').style.display=curGame.isVoucher?'block':'none';
+document.getElementById('page1').style.display='block';window.scrollTo(0,0);}
+function buyNowPack(pi){selectPack(pi);if(!verifiedUid){alert('❌ First Verify UID!');document.getElementById('usernameInput').focus();return;}goToPayment();}
+function verifyUid(){if(curGame.isVoucher){verifiedUid=true;verifiedUser="VOUCHER";document.getElementById('afterVerify').style.display='block';return;}const v=document.getElementById('usernameInput').value.trim();if(!v){document.getElementById('usernameError').style.display='block';return;}if(v===curGame.fixedUid){verifiedUid=true;verifiedUser=curGame.fixedUser;document.getElementById('usernameError').style.display='none';document.getElementById('usernameOk').style.display='block';document.getElementById('usernameOk').textContent='✅ Connected - '+curGame.fixedUser;document.getElementById('verifiedCard').style.display='block';document.getElementById('verifiedCard').innerHTML=`<div class="verify-card"><div class="v-left"><b>≡ ${curGame.fixedUser} ≡</b><p>Player ID: ${curGame.fixedUid}</p></div><button class="v-arrow" onclick="logoutAccount()">⇄</button></div>`;document.getElementById('afterVerify').style.display='block';}else{document.getElementById('usernameError').style.display='block';document.getElementById('usernameError').textContent='❌ Wrong ID!';document.getElementById('usernameOk').style.display='none';document.getElementById('verifiedCard').style.display='none';document.getElementById('afterVerify').style.display='none';}}
+function logoutAccount(){if(curGame&&curGame.isVoucher)return;verifiedUid=false;verifiedUser="";document.getElementById('verifiedCard').style.display='none';document.getElementById('afterVerify').style.display='none';document.getElementById('usernameOk').style.display='none';document.getElementById('usernameInput').value='';}
+function selectPack(pi){curPack=curGame.packs[pi];document.querySelectorAll('#packGrid .pack').forEach((el,i)=>{el.classList.toggle('sel',i===pi);});}
+function closeFlow(){['page1','page2','page3','page4','settingsPage'].forEach(id=>{let e=document.getElementById(id);if(e)e.style.display='none';});if(gameBannerTimer)clearInterval(gameBannerTimer);}
+function backToPage1(){document.getElementById('page2').style.display='none';document.getElementById('page4').style.display='none';document.getElementById('page1').style.display='block';}
+function goToPayment(){if(!verifiedUid){alert('❌ First Verify Correct UID!');return;}curOrderId="FD-"+Date.now().toString().slice(-6)+Math.floor(1000+Math.random()*9000);document.getElementById('page1').style.display='none';
+if(curGame.isVoucher){document.getElementById('p2UserTop').innerHTML=`<div style="display:flex;justify-content:space-between"><div><b>🎁 VOUCHER - REDEEM CODE</b><br><span style="color:#facc15;font-size:13px">No UID Needed - Customer Khud Redeem Karega</span></div><span>🎁</span></div>`;}else{document.getElementById('p2UserTop').innerHTML=`<div style="display:flex;justify-content:space-between"><div><b>≡ ${verifiedUser} ≡</b><br><span style="color:#aab8c5;font-size:13px">Player ID: ${curGame.fixedUid}</span></div><span>⇄</span></div>`;}
+document.getElementById('p2Summary').innerHTML=`<div style="display:flex;justify-content:space-between"><span style="color:#facc15;font-size:13px;font-weight:bold">1 PACK SELECTED</span><span style="color:#94a3b8;font-size:13px">Total</span></div><div style="display:flex;justify-content:space-between;margin-top:8px"><b style="font-size:22px">${curPack.name}</b><b style="font-size:22px;color:#facc15">${curPack.price}</b></div><div style="font-size:13px;color:#facc15;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15)">🆔 Order ID: ${curOrderId}</div>`;let methods=[];if(localStorage.getItem('deal_payCard')!=='0')methods.push({id:"Visa Credit",brand:"VISA",gold:false});if(localStorage.getItem('deal_payDebit')!=='0')methods.push({id:"Debit Card",brand:"Mastercard",gold:false});if(localStorage.getItem('deal_payApple')!=='0')methods.push({id:"Apple Pay",brand:"Apple Pay",gold:false});if(localStorage.getItem('deal_payGolden')!=='0')methods.push({id:"Golden Card",brand:"GOLDEN",gold:true});if(!methods.length)methods.push({id:"Visa Credit",brand:"VISA",gold:false});curPay=methods[0].id;_curBrand=methods[0].brand;_curCard=methods[0].id==="Visa Credit"?"•••• 4821":methods[0].id==="Debit Card"?"•••• 7310":methods[0].id==="Golden Card"?"•••• 9999 GOLD":"";let html=`<div class="pay-voltra"><div style="padding:10px 10px 4px;font-weight:800;font-size:14px;color:#111">Payment method</div>`;methods.forEach((m,mi)=>{let logo="",sub="";if(m.id==="Apple Pay"){logo=`<div class="pay-logo apple"><span style="font-size:16px;font-weight:900;margin-left:2px">Pay</span></div>`;sub=`<b style="font-size:15px;color:#111">Apple Pay</b><br><small style="color:#64748b">Pay with Face ID</small>`;}if(m.id==="Visa Credit"){logo=`<div class="pay-logo visa">VISA</div>`;sub=`<b style="font-size:15px;color:#111">Visa Credit</b><br><small style="color:#64748b">•••• 4821</small>`;}if(m.id==="Debit Card"){logo=`<div class="pay-logo"><div class="mc-c"><i></i><i></i></div></div>`;sub=`<b style="font-size:15px;color:#111">Debit Card</b><br><small style="color:#64748b">Mastercard •••• 7310</small>`;}if(m.id==="Golden Card"){logo=`<div class="pay-logo">👑</div>`;sub=`<b style="font-size:15px;color:#111">👑 Golden Card</b><br><small style="color:#92400e">VIP •••• 9999 GOLD</small>`;}html+=`<div class="pay-row ${m.gold?'golden':''} ${mi===0?'sel':''}" onclick="selectVoltraPay(${mi},'${m.id}','${m.brand}')">${logo}<div>${sub}</div><div class="pay-radio"></div></div>`;});html+=`</div>`;document.getElementById('payMethods').innerHTML=html;document.getElementById('page2').style.display='block';window.scrollTo(0,0);}
+function selectVoltraPay(mi,id,brand){curPay=id;_curBrand=brand;_curCard=id==="Visa Credit"?"•••• 4821":id==="Debit Card"?"•••• 7310":id==="Golden Card"?"•••• 9999 GOLD":"";document.querySelectorAll('.pay-row').forEach((el,i)=>{el.classList.toggle('sel',i===mi);});}
+function goToLoading(){let payName=curPay+" "+_curCard;document.getElementById('cfPrice').textContent=curPack.price;document.getElementById('cfPack').textContent=curPack.name;document.getElementById('cfUid').textContent=curGame.isVoucher?"REDEEM CODE":curGame.fixedUid;document.getElementById('cfUser').textContent=verifiedUser||curGame.fixedUser;document.getElementById('cfOrder').textContent=curOrderId;document.getElementById('cfPay').textContent=payName;document.getElementById('confirmModal').classList.add('show');}
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('show');}
+function confirmPayNow(){document.getElementById('confirmModal').classList.remove('show');document.getElementById('page2').style.display='none';document.getElementById('page3').style.display='block';document.getElementById('p3UidLine').textContent=curGame.isVoucher?"VOUCHER | REDEEM CODE":"UID: "+curGame.fixedUid+" | "+(verifiedUser||curGame.fixedUser);document.getElementById('p3UserTop').innerHTML="<b>"+(verifiedUser||curGame.fixedUser)+"</b> • "+curPack.name+" • "+curPack.price+" • Order: "+curOrderId;let pct=0;let bar=document.getElementById('p3Bar');let pctEl=document.getElementById('p3Pct');let msg=document.getElementById('p3Msg');let timer=setInterval(()=>{pct+=5;if(pct>100)pct=100;bar.style.width=pct+"%";pctEl.textContent=pct+"%";if(pct<40)msg.textContent="Connecting to bank...";else if(pct<80)msg.textContent="Verifying payment...";else msg.textContent="Almost done...";if(pct>=100){clearInterval(timer);setTimeout(showResult,600);}},120);}
+function showResult(){document.getElementById('page3').style.display='none';let st=defaultStatus;let isOk=st==="Success";let cls=isOk?"paid":st==="Failed"?"failed":"pending";let txt=isOk?"PAID":st==="Failed"?"FAILED":"PENDING";let reason=st==="Pending"?pendingReason:st==="Failed"?failedReason:"Payment Successful! Delivery in progress.";orders.unshift({game:curGame.name,pack:curPack.name,price:curPack.price,uid:curGame.isVoucher?"REDEEM CODE":curGame.fixedUid,username:verifiedUser,pay:curPay,id:curOrderId,status:st});localStorage.setItem('deal_orders',JSON.stringify(orders));document.getElementById('page4').style.display='block';document.getElementById('resultBox').innerHTML=`<div style="color:#111"><h2 style="font-size:24px">${isOk?"✅ Payment Successful!":st==="Failed"?"❌ Payment Failed":"⏳ Payment Pending"}</h2><p style="color:#64748b;font-size:13px;margin:8px 0">${reason}</p><div class="printerTop"><div style="font-size:12px;color:#64748b">FAST DEAL STORE</div><div class="printerBody"><i style="background:#22c55e"></i><i style="background:#f59e0b"></i><i style="background:#ef4444"></i></div><div class="printerSlot"></div></div><div class="receiptWrap2"><div class="receiptPaper2" id="receiptPaper"><div style="text-align:center"><b style="font-size:18px">FAST DEAL STORE</b><br><small style="color:#64748b">Official Receipt</small></div><div class="stamp ${cls}" id="stampEl"><b>${txt}</b><small>VERIFIED</small></div><div class="r-row2"><span>Game</span><b>${curGame.name}</b></div><div class="r-row2"><span>Pack</span><b>${curPack.name}</b></div><div class="r-row2"><span>Price</span><b>${curPack.price}</b></div><div class="r-row2"><span>UID</span><b>${curGame.isVoucher?"REDEEM CODE":curGame.fixedUid}</b></div><div class="r-row2"><span>Username</span><b>${verifiedUser}</b></div><div class="r-row2"><span>Order ID</span><b>${curOrderId}</b></div><div class="r-row2"><span>Pay With</span><b>${curPay} ${_curCard}</b></div><div class="r-row2"><span>Status</span><b>${st}</b></div><div class="barcode2"></div><div style="text-align:center;font-size:12px;color:#94a3b8;margin-top:8px">Thank you for shopping with us!</div></div></div><button onclick="closeFlow()" style="width:100%;margin-top:14px;padding:14px">🏠 Back To Store</button></div>`;setTimeout(()=>{let p=document.getElementById('receiptPaper');if(p)p.classList.add('show');setTimeout(()=>{let s=document.getElementById('stampEl');if(s)s.classList.add('show');},900);},200);if(isOk)fireConfetti();}
+function fireConfetti(){let colors=['#ff2d55','#ffd700','#00ff88','#2563eb','#fff'];for(let i=0;i<80;i++){let c=document.createElement('div');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=colors[i%5];c.style.width=(6+Math.random()*6)+'px';c.style.height=(8+Math.random()*8)+'px';c.style.animationDuration=(2+Math.random()*2)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4000);}}
+loadAll();
+</script>
 </body>
 </html>
