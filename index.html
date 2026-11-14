@@ -305,7 +305,28 @@ window.addEventListener('appinstalled',()=>{deferredPrompt=null;let b=document.g
 function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then((r)=>{if(r.outcome==="accepted"){alert('✅ App Install Ho Gayi! Home Screen par dekho');}deferredPrompt=null;document.getElementById('installBtn').classList.remove('show');document.getElementById('installBar').classList.remove('show');});}else{showInstallHelp();}}
 function showInstallHelp(){alert('📲 CHROME SE INSTALL KARO:\n\n1. Chrome me 3 Dots (⋮) dabao\n2. Install App / Add to Home Screen dabao\n3. Install / Add dabao\n\nAgar option na aaye to:\nChrome > 3 Dots > Add to Home Screen\n\nNote: File ko https ya localhost par kholo to Install option aayega');}
 function compressImage(file,cb){let r=new FileReader();r.onload=e=>{let img=new Image();img.onload=()=>{let c=document.createElement('canvas');let w=img.width,h=img.height,maxW=800;if(w>maxW){h=h*maxW/w;w=maxW;}c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',0.72));};img.src=e.target.result;};r.readAsDataURL(file);}
-function safeSave(k,v){try{localStorage.setItem(k,v);return true;}catch(e){alert('Storage full!');return false;}}
+// ULTIMATE STORAGE - Sirf Ye Wala Lagao
+let MyDB;
+function openBigDB(){
+  return new Promise((resolve)=>{
+    let req = indexedDB.open('UltimatePanelDB', 1);
+    req.onupgradeneeded = function(e){
+      let db = e.target.result;
+      if(!db.objectStoreNames.contains('all')) db.createObjectStore('all');
+    };
+    req.onsuccess = function(e){ MyDB = e.target.result; resolve(MyDB); };
+  });
+}
+
+async function saveBig(key, value){
+  if(!MyDB) await openBigDB();
+  let tx = MyDB.transaction(['all'], 'readwrite');
+  tx.objectStore('all').put(value, key);
+}
+openBigDB();
+  // Purani file ke liye - taake baqi code na toote
+function safeSave(k,v){ saveBig(k,v); return true; }
+function loadBigSync(k){ return localStorage.getItem(k); }
 let clickCount=0,clickTimer=null;
 function secretClick(){clickCount++;if(clickTimer)clearTimeout(clickTimer);clickTimer=setTimeout(()=>{clickCount=0},2000);if(clickCount>=5){clickCount=0;document.getElementById('settingsPage').style.display='block';window.scrollTo(0,0);}}
 function closeSettings(){document.getElementById('settingsPage').style.display='none';}
